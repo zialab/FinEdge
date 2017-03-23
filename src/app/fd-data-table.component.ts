@@ -9,14 +9,18 @@ import { Transaction } from './transaction';
 //import { CalculationFrequency } from './calculation-frequency';
 
 @Component({
-    selector: 'fd-data-table',
-    templateUrl: './fd-data-table.component.html'
-    //styleUrls: [ './data-table-demo.component.css' ]
+    selector:     'fd-data-table',
+    templateUrl:  './fd-data-table.component.html',
+    styleUrls: [  "./../../node_modules/primeng/resources/primeng.min.css",
+                  "./../../node_modules/primeng/resources/themes/omega/theme.css",
+                  "./../../node_modules/font-awesome/css/font-awesome.min.css"
+                ]
+
 })
 
 export class FDDataTableComponent implements OnInit {
     investmentName : string = "FD";
-    
+
     activeId: number;
 
     displayDialog: boolean;
@@ -28,7 +32,7 @@ export class FDDataTableComponent implements OnInit {
     newTransaction: boolean;
 
     transactions: Transaction[];
-    
+
     constructor(
         private investmentService: InvestmentService,
         private route: ActivatedRoute) { }
@@ -36,7 +40,7 @@ export class FDDataTableComponent implements OnInit {
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
             this.activeId = params['id'];
-            
+
 //            this.investmentService.getInvestment(this.activeId).then(inv => this.investment = inv);
 //
 //            console.log("b44 switchMap selected investment ");
@@ -45,7 +49,7 @@ export class FDDataTableComponent implements OnInit {
 //            console.log(this.transactions);
         });
         console.log("selected investment id "+this.activeId);
-        
+
         this.investmentService.getTransactions(this.activeId).then(transactions => this.transactions = transactions);
     }
 
@@ -88,14 +92,14 @@ export class FDDataTableComponent implements OnInit {
     findSelectedTransactionIndex(): number {
         return this.transactions.indexOf(this.selectedTransaction);
     }
-    
+
     getAmountAtMaturity(t: Transaction): number{
         let fdCalculator: FDCalculator = new FDCalculator(t);
         return fdCalculator.calculateMaturityAmount();
     }
-    
+
     getReturn(t: Transaction): number {
         let fdCalculator: FDCalculator = new FDCalculator(t);
-        return fdCalculator.calculateReurn();   
+        return fdCalculator.calculateReurn();
     }
 }

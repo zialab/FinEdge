@@ -8,7 +8,6 @@ import 'rxjs/Rx';
 
 import { Investment } from './investment';
 import { Transaction } from './transaction';
-import { FDTransaction } from './fd-transaction';
 import { InvestmentService } from './investment.service';
 
 //import { DataTableDemoComponent } from './data-table-demo.component';
@@ -20,25 +19,25 @@ import { InvestmentService } from './investment.service';
 })
 
 export class InvestmentDetailComponent implements OnInit {
-    
+
     investment: Investment;
     transactions: Transaction[];
     activeInvId: number;
     //location: Location;
-    
+
     constructor(
         private investmentService: InvestmentService,
         private route: ActivatedRoute,
         private location: Location
     ) {}
-    
+
 	displayDialog: boolean;
 
     ngOnInit() {
-        
+
         this.route.params.subscribe((params: Params) => {
             this.activeInvId = params['id'];
-            
+
             this.investmentService.getInvestment(this.activeInvId).then(inv => this.investment = inv);
 
             console.log("b44 switchMap selected investment ");
@@ -47,27 +46,27 @@ export class InvestmentDetailComponent implements OnInit {
             console.log(this.transactions);
         });
         console.log("selected investment id "+this.activeInvId);
-        
+
         this.route.params
             .switchMap((params: Params) => this.investmentService.getInvestment(this.activeInvId))
             .subscribe(investment => this.investment = investment);
     }
 
-    
+
 //    save(): void {
 //        this.investmentService.update(this.investment)
 //            .then(() => this.goBack());
 //    }
-    
+
     goBack(): void {
         this.location.back();
     }
-    
+
 //    ngOnInit(): void {
-//        
+//
 //        this.route.params.subscribe((params: Params) => {
 //            this.activeId = params['id'];
-//            
+//
 //            this.investmentService.getInvestment(this.activeId).then(inv => this.investment = inv);
 //
 //            console.log("b44 switchMap selected investment ");
@@ -76,20 +75,20 @@ export class InvestmentDetailComponent implements OnInit {
 //            console.log(this.transactions);
 //        });
 //        console.log("selected investment id "+this.activeId);
-//    
-//        
-//        
+//
+//
+//
 //        this.route.params
 //            .switchMap((params: Params) => this.investmentService.getInvestment(this.activeId))
 //        .subscribe(investment => {
-//            this.investment = investment; 
+//            this.investment = investment;
 //            this.transactions = investment.transactions;
 //            console.log("switchMap selected investment ");
 //            console.log(this.investment);
 //            console.log("switchMap selected transactions ");
 //            console.log(this.transactions);
 //        });
-//        
+//
 //        console.log("selected investment ");
 //        console.log(this.investment);
 //        console.log("selected transactions ");
@@ -100,7 +99,7 @@ export class InvestmentDetailComponent implements OnInit {
 //        this.investmentService.update(this.investment)
 //            .then(() => this.goBack());
 //    }
-//    
+//
 //    goBack(): void {
 //        this.location.back();
 //    }
@@ -108,32 +107,32 @@ export class InvestmentDetailComponent implements OnInit {
 
 
 //export class InvestmentDetailComponent implements OnInit {
-//    
+//
 //    investment: Investment;
 //    transactions: Transaction[];
 //    activeId: number;
 //    displayDialog: boolean;
-//    
+//
 //    newTransaction: boolean;
-//    
+//
 //    transaction: Transaction = new FDTransaction("vinz","yearz","brandz","colorz");
     //investments: Investment[];
-    
-//    
+
+//
 //    constructor(
 //        private investmentService: InvestmentService,
 //        private route: ActivatedRoute,
 //        private location: Location
 //    ) {}
-    
-    
+
+
     //
 //    selectedTransaction: Transaction;
-    
+
     //ngOnInit() {
-        
-        
-        
+
+
+
         //this.investmentService.getInvestments().then(function(investments) {
 //            console.log("i am here");
 //            console.log(investments);
@@ -160,7 +159,7 @@ export class InvestmentDetailComponent implements OnInit {
 //        this.route.params
 //            .switchMap((params: Params) => this.investmentService.getInvestment(this.activeId))
 //            .subscribe(investment => this.investment = investment);
-        
+
         //this.investments = this.investmentService.getInvestments();
         //console.log(this.investmentService.getInvestments());
         /*
@@ -185,13 +184,13 @@ export class InvestmentDetailComponent implements OnInit {
 //            this.investment = investment;
 //            console.log("next");
 //        });
-//        
+//
 //        console.log("zia");
 //        console.log(this.investment);
 //        console.log(this.investment.transactions);
 //        console.log("rehman");
 //        this.transactions = this.investment.transactions;
-//            
+//
 //   }
 
 //    showDialogToAdd() {
@@ -199,29 +198,29 @@ export class InvestmentDetailComponent implements OnInit {
 //        this.transaction = new FDTransaction("vinz","yearz","brandz","colorz");
 //        this.displayDialog = true;
 //    }
-//    
+//
 //    save() {
 //        if(this.newTransaction)
 //            this.transactions.push(this.transaction);
 //        else
 //            this.transactions[this.findSelectedTransactionIndex()] = this.transaction;
-//        
+//
 //        this.transaction = null;
 //        this.displayDialog = false;
 //    }
-//    
+//
 //    delete() {
 //        this.transactions.splice(this.findSelectedTransactionIndex(), 1);
 //        this.transaction = null;
 //        this.displayDialog = false;
-//    }    
-//    
+//    }
+//
 //    onRowSelect(event) {
 //        this.newTransaction = false;
 //        this.transaction = this.cloneTransaction(event.data);
 //        this.displayDialog = true;
 //    }
-//    
+//
 //    cloneTransaction(t: Transaction): Transaction {
 //        let transaction = new FDTransaction("vinz","yearz","brandz","colorz");
 //        for(let prop in t) {
@@ -229,16 +228,16 @@ export class InvestmentDetailComponent implements OnInit {
 //        }
 //        return transaction;
 //    }
-//    
+//
 //    findSelectedTransactionIndex(): number {
 //        return this.transactions.indexOf(this.selectedTransaction);
 //    }
-    
+
 //    ngOnInit(): void {
-//        
+//
 //        this.route.params.subscribe((params: Params) => {
 //            this.activeId = params['id'];
-//            
+//
 //            this.investmentService.getInvestment(this.activeId).then(inv => this.investment = inv);
 //
 //            console.log("b44 switchMap selected investment ");
@@ -247,20 +246,20 @@ export class InvestmentDetailComponent implements OnInit {
 //            console.log(this.transactions);
 //        });
 //        console.log("selected investment id "+this.activeId);
-//    
-//        
-//        
+//
+//
+//
 //        this.route.params
 //            .switchMap((params: Params) => this.investmentService.getInvestment(this.activeId))
 //        .subscribe(investment => {
-//            this.investment = investment; 
+//            this.investment = investment;
 //            this.transactions = investment.transactions;
 //            console.log("switchMap selected investment ");
 //            console.log(this.investment);
 //            console.log("switchMap selected transactions ");
 //            console.log(this.transactions);
 //        });
-//        
+//
 //        console.log("selected investment ");
 //        console.log(this.investment);
 //        console.log("selected transactions ");
@@ -276,9 +275,8 @@ export class InvestmentDetailComponent implements OnInit {
 //        this.investmentService.update(this.investment)
 //            .then(() => this.goBack());
 //    }
-//    
+//
 //    goBack(): void {
 //        this.location.back();
 //    }
 }
-

@@ -21,13 +21,13 @@ export class MFCalculator {
 
     getLatestNav(transaction: MFTransaction) : number{
       //let resultNavMap : Map<number, MFNav>;
-      let resultNav : MFNav;
-      let scodes : number[] = [];
-      scodes.push(transaction.scode);
-      this.mfInvestmentService.getLatestNav(scodes).then(resultNavList => {
-        resultNav = resultNavList.find(navObj => navObj.scode == transaction.scode);
-        return Number(resultNav.nav);
-      });
+      // let resultNav : MFNav;
+      // let scodes : number[] = [];
+      // scodes.push(transaction.scode);
+      // this.mfInvestmentService.getLatestNav(scodes).then(resultNavList => {
+      //   resultNav = resultNavList.find(navObj => navObj.scode == transaction.scode);
+      //   return Number(resultNav.nav);
+      // });
       return Number('0');
     }
 

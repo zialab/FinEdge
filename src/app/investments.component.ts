@@ -16,25 +16,25 @@ import {single, multi} from './data';
 
 export class InvestmentsComponent implements OnInit {
 
-  single: any[];
-  multi: any[];
-
-  view: any[] = [700, 400];
-
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
-
-  onSelect1(event) {
-    console.log(event);
-  }
-
+    // single: any[];
+    // multi: any[];
+    //
+    // view: any[] = [700, 400];
+    //
+    // colorScheme = {
+    //   domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    // };
+    //
+    // onSelect1(event) {
+    //   console.log(event);
+    // }
+    
     title = 'Investment Profile';
     investments: Investment[];
     selectedInvestment: Investment;
 
     constructor(private router: Router, private investmentService: InvestmentService) {
-      Object.assign(this, {single, multi});
+        Object.assign(this, {single, multi});
     }
 
     ngOnInit(): void {
