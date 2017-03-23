@@ -11,23 +11,24 @@ import { MFNav } from './mf-nav-model';
 @Injectable()
 export class MFInvestmentService {
 
+  private mutualFundUrl = 'https://mutualfundsnav.p.mashape.com/';
+  private headers : Headers = new Headers({
+         'Content-Type': 'application/json',
+         'Accept': 'application/json',
+         'X-Mashape-Key': 'H5jTdzFVINmshqJUgY38yQfXZSJOp1XhcgojsnXEmHlRq5LFrU'
+       }); // ... Set content type to JSON
+  private options : RequestOptions = new RequestOptions({ headers: this.headers }); // Create a request option
+
   constructor(private http: Http) { }
 
   //private headers = new Headers({'Content-Type': 'application/json','X-Mashape-Key': 'H5jTdzFVINmshqJUgY38yQfXZSJOp1XhcgojsnXEmHlRq5LFrU','Accept': 'application/json'});
   //private options = new RequestOptions({ headers: this.headers });
 
-  private mutualFundUrl = 'https://mutualfundsnav.p.mashape.com/';
 
   getLatestNav(scodes: number[]): Promise<MFNav[]> {
     let bodyString = '{"scodes":' +JSON.stringify(scodes) +'}'; // Stringify payload
-       let headers = new Headers({
-           'Content-Type': 'application/json',
-           'Accept': 'application/json',
-           'X-Mashape-Key': 'H5jTdzFVINmshqJUgY38yQfXZSJOp1XhcgojsnXEmHlRq5LFrU'
-         }); // ... Set content type to JSON
-       let options = new RequestOptions({ headers: headers }); // Create a request option
 
-       return  this.http.post(this.mutualFundUrl, bodyString , options)
+    return  this.http.post(this.mutualFundUrl, bodyString , this.options)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError); // ...using post request

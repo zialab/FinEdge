@@ -55,6 +55,7 @@ export class MFDataTableComponent implements OnInit {
 
         this.investmentService.getTransactions(this.activeId).then(transactions => {
           this.transactions = transactions;
+          this.mfCalculator.refreshNav(this.transactions);
           this.prepareMFTransactionGroup();
         });
 
@@ -67,13 +68,12 @@ export class MFDataTableComponent implements OnInit {
         if(this.transactionGroupMap.get(mfTransaction.scode) === undefined) {
           let transactionArray : MFTransaction[] = [];
           transactionArray.push(mfTransaction);
-          let mfTransactionGroup: MFTransactionGroup = new MFTransactionGroup(mfTransaction.transactionDate, mfTransaction.scode,mfTransaction.fundName, mfTransaction.amountInvested, this.getTransactionReturn(mfTransaction), this.getReturnPercentage(mfTransaction), this.getTransactionLatestFundValue(mfTransaction), transactionArray);
+          let mfTransactionGroup: MFTransactionGroup = new MFTransactionGroup(mfTransaction.transactionDate, mfTransaction.scode,mfTransaction.fundName, mfTransaction.amountInvested, this.getTransactionReturn(mfTransaction), this.getTransactionReturnPercentage(mfTransaction), this.getTransactionLatestFundValue(mfTransaction), transactionArray);
           this.transactionGroupMap.set(mfTransaction.scode, mfTransactionGroup);
         } else {
           let mfTransactionGroup: MFTransactionGroup = this.transactionGroupMap.get(mfTransaction.scode);
           mfTransactionGroup.totalInvestment = mfTransactionGroup.totalInvestment + mfTransaction.amountInvested;
           mfTransactionGroup.totalReturn = mfTransactionGroup.totalReturn + this.getTransactionReturn(mfTransaction);
-          mfTransactionGroup.returnPercentage = this.getReturnPercentage(mfTransaction);
           mfTransactionGroup.latestFundValue = mfTransactionGroup.latestFundValue + this.getTransactionLatestFundValue(mfTransaction)
           mfTransactionGroup.transactions.push(mfTransaction);
           this.transactionGroupMap.set(mfTransaction.scode, mfTransactionGroup);
@@ -82,6 +82,7 @@ export class MFDataTableComponent implements OnInit {
 
       this.transactionGroupList = [];
       this.transactionGroupMap.forEach((mfTransactionGroup: MFTransactionGroup, key: number) => {
+        mfTransactionGroup.returnPercentage = this.getReturnPercentage(mfTransactionGroup);
         this.transactionGroupList.push(mfTransactionGroup);
       });
     }
@@ -134,15 +135,19 @@ export class MFDataTableComponent implements OnInit {
         return this.mfCalculator.getTransactionReturn(t);
     }
 
-    getReturnPercentage(t: MFTransaction): number {
-        return this.mfCalculator.getReturnPercentage(t);
+    getTransactionReturnPercentage(t: MFTransaction): number {
+        return this.mfCalculator.getTransactionReturnPercentage(t);
     }
 
-    getTotalUnits(transaction: MFTransaction): number{
-        return this.mfCalculator.getTotalUnits(transaction);
+    getTransactionUnits(transaction: MFTransaction): number{
+        return this.mfCalculator.getTransactionUnits(transaction);
     }
 
-    getTotalInvestment(): number {
+    getReturnPercentage(mfTransactionGroup: MFTransactionGroup): number {
+      return Math.round(((mfTransactionGroup.totalReturn/this.getTransactionGroupInvestment(mfTransactionGroup.transactions))*100)*100)/100;
+    }
+
+    private getTransactionGroupInvestment(transactions : MFTransaction[]): number {
         let totalInvestment: number = 0;
         for (let transaction of this.transactions) {
             totalInvestment = totalInvestment + transaction.amountInvested;
@@ -150,6 +155,13 @@ export class MFDataTableComponent implements OnInit {
         return totalInvestment;
     }
 
+    // private getTotalUnits(): number{
+    //   let totalUnits: number = 0;
+    //   for (let transaction of this.transactions) {
+    //       totalUnits = totalUnits + this.getTransactionUnits(transaction as MFTransaction);
+    //   }
+    //   return totalUnits;
+    // }
     // getMFTransactions(scode: number) : MFTransaction[] {
     //   return this.transactionGroupMap.get(scode).transactions;
     // }
