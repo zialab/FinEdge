@@ -1,0 +1,81 @@
+<div>
+    <p-dataTable [value]="transactions" selectionMode="single" [(selection)]="selectedTransaction" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10" [responsive]="true">
+        <p-header>{{investmentName}} Investment Transactions Details</p-header>
+        <p-column field="transactionDate" header="Transaction Date" [sortable]="true" [style]="{'overflow':'visible' }">
+            <template let-col let-transaction="rowData" pTemplate="body">
+                 {{transaction[col.field]|date }}
+            </template>
+            <template let-col let-transaction="rowData" pTemplate="editor">
+                <p-calendar [(ngModel)]="transaction[col.field]"></p-calendar>
+            </template>
+        </p-column>
+        <p-column field="amountInvested" header="Investment Value" [sortable]="true"></p-column>
+        <p-column field="rateOfReturn" header="Rate" [sortable]="true"></p-column>
+        <p-column field="maturityDate" header="Maturity Date" [sortable]="true" [style]="{'overflow':'visible' }">
+            <template let-col let-transaction="rowData" pTemplate="body">
+                 {{transaction[col.field]|date }}
+            </template>
+            <template let-col let-transaction="rowData" pTemplate="editor">
+                <p-calendar [(ngModel)]="transaction[col.field]"></p-calendar>
+            </template>
+        </p-column>
+        <p-column field="returns" header="Profit" [sortable]="true">
+            <template let-col let-transaction="rowData" pTemplate="body">
+                 {{getReturn(transaction)}}
+            </template>
+        </p-column>
+        <p-column field="amountAtMaturity" header="Maturity Value" [sortable]="true">
+            <template let-col let-transaction="rowData" pTemplate="body">
+                 {{getAmountAtMaturity(transaction)}}
+            </template>
+        </p-column>
+        <p-column field="charges" header="Charges" [sortable]="true"></p-column>
+        <p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-footer>
+    </p-dataTable>
+
+    <p-dialog header="Transaction Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="transaction">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="transactionDate">Transaction Date</label></div>
+                <p-calendar [(ngModel)]="transaction.transactionDate" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{transaction.transactionDate|date}}</span>
+                <!--
+                
+                <div class="ui-grid-col-8"><input pInputText id="transactionDate" [(ngModel)]="transaction.transactionDate" /></div>
+                
+                -->
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="amountInvested">Investment Value</label></div>
+                <div class="ui-grid-col-8"><input pInputText id="amountInvested" [(ngModel)]="transaction.amountInvested" /></div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="rateOfReturn">Rate</label></div>
+                <div class="ui-grid-col-8"><input pInputText id="rateOfReturn" [(ngModel)]="transaction.rateOfReturn" /></div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="maturityDate">Maturity Date</label></div>
+<!--                <div class="ui-grid-col-8"><input pInputText id="maturityDate" [(ngModel)]="transaction.maturityDate"/></div>-->
+                <p-calendar [(ngModel)]="transaction.maturityDate" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{transaction.maturityDate|date}}</span>
+                
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="returns">Profit</label></div>
+                <div class="ui-grid-col-8"><input pInputText id="returns" [(ngModel)]="transaction.returns" /></div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="amountAtMaturity">Maturity Value</label></div>
+                <div class="ui-grid-col-8"><input pInputText id="amountAtMaturity" [(ngModel)]="transaction.amountAtMaturity" /></div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="charges">Charges</label></div>
+                <div class="ui-grid-col-8"><input pInputText id="charges" [(ngModel)]="transaction.charges" /></div>
+            </div>
+        </div>
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
+                <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+            </div>
+        </p-footer>
+    </p-dialog>
+</div>

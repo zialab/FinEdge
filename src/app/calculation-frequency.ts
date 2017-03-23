@@ -1,0 +1,1 @@
+export enum CalculationFrequency {SimpleInterest = 0, Monthly = 12, Quaterly = 4, HalfYearly = 2, Annually = 1};
