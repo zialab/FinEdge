@@ -7,29 +7,43 @@ import { Transaction } from './transaction';
 import { MFTransaction } from './mf-transaction';
 import { MFInvestmentService } from './mf-investment.service';
 import { MFNav } from './mf-nav-model';
+import { MFData } from './mf-data.model';
 
 @Injectable()
 export class MFCalculator {
 
     private investmentAmount : number = 0;
-    private navs : MFNav[] = [];
+    private navs : Array<MFNav> = [];
 
     constructor(private mfInvestmentService: MFInvestmentService) { }
 
-    refreshNav(transactions: TransactionI[]){
-      let scodes: number[] = [];
-      for(let transaction of transactions) {
-        let mfTransaction:MFTransaction = transaction as MFTransaction;
-        if(!scodes.includes(mfTransaction.scode)){
-          scodes.push(mfTransaction.scode);
-        }
-      }
+    // refreshNav(transactions: TransactionI[]){
+    //   //let scodes: number[] = [];
+    //   for(let transaction of transactions) {
+    //     let mfTransaction:MFTransaction = transaction as MFTransaction;
+    //     if(!this.isMFNavIncludes(mfTransaction.scode)) {
+    //       this.mfInvestmentService.getLatestNav(mfTransaction.scode).then(nav => {
+    //         this.navs.push(nav as MFNav);
+    //       });
+    //     }
+    //   }
+    // }
 
-      this.mfInvestmentService.getLatestNav(scodes).then(navs => {
-        this.navs = navs;
-      });
+    addMFNav(mfNav: MFNav): void {
+      this.navs.push(mfNav);
     }
 
+    private isMFNavIncludes(scode: number): boolean {
+      let result :boolean = false;
+      this.navs.forEach(navItem => {
+        navItem.data.forEach(dataItem => {
+            if(dataItem.schmCode == scode) {
+              result = true;
+            }
+        });
+      });
+      return result;
+    }
     getTransactionUnits(transaction: MFTransaction): number{
         let totalUnits : number = transaction.amountInvested/transaction.unitPrice;
         return Math.round(totalUnits*100)/100;
@@ -41,8 +55,17 @@ export class MFCalculator {
     }
 
     getLatestNav(transaction: MFTransaction) : number{
-      let resultNav : MFNav = this.navs.find(nav => nav.scode == transaction.scode);
-      return Number(resultNav.nav);
+      let resultNavVal : number;
+      this.navs.forEach(navItem => {
+        //let data : Array<MFData> = navItem.data;
+        navItem.data.forEach(dataItem => {
+            if(dataItem.schmCode == transaction.scode) {
+              resultNavVal = dataItem.navVal;
+            }
+        });
+      });
+
+      return resultNavVal;
     }
 
     getTransactionReturn(transaction: MFTransaction) : number {

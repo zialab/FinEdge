@@ -10,6 +10,8 @@ import { MFTransactionGroup } from './mf-transaction-group';
 import { MFNav } from './mf-nav-model';
 //import { RateFrequency } from './rate-frequency';
 //import { CalculationFrequency } from './calculation-frequency';
+import { MFInvestmentService } from './mf-investment.service';
+
 
 @Component({
     selector: 'mf-data-table',
@@ -32,11 +34,13 @@ export class MFDataTableComponent implements OnInit {
 
     private transactions: TransactionI[]=[];
     transactionGroupList: MFTransactionGroup[];
-    private transactionGroupMap: Map<number, MFTransactionGroup>;
-    //mfCalculator: MFCalculator = new MFCalculator();
+    private transactionGroupMap: Map<number, MFTransactionGroup> = new Map<number, MFTransactionGroup>();
+    //mfCalculator: MFCalculator = new MFCalculator();//this.transactionGroupMap = new Map<number, MFTransactionGroup>();
+    errorMessage: string;
 
     constructor(
         private investmentService: InvestmentService,
+        private mfInvestmentService: MFInvestmentService,
         private route: ActivatedRoute,
         private mfCalculator: MFCalculator) { }
 
@@ -54,31 +58,46 @@ export class MFDataTableComponent implements OnInit {
         console.log("selected investment id "+this.activeId);
 
         this.investmentService.getTransactions(this.activeId).then(transactions => {
-          this.transactions = transactions;
-          this.mfCalculator.refreshNav(this.transactions);
-          this.prepareMFTransactionGroup();
+          //this.transactions = transactions;
+          //this.mfCalculator.refreshNav(this.transactions);
+          for(let transaction of transactions) {
+            let mfTransaction:MFTransaction = transaction as MFTransaction;
+
+            this.mfInvestmentService.getLatestNav(mfTransaction.scode).subscribe(
+                       mfNav  => {
+                         this.mfCalculator.addMFNav(mfNav);
+                         this.prepareMFTransactionGroup(mfTransaction);
+                       },
+                       error =>  this.errorMessage = <any>error);
+          }
+
+
         });
 
     }
 
-    private prepareMFTransactionGroup(): void {
-      this.transactionGroupMap = new Map<number, MFTransactionGroup>();
-      for(let mfTransactionItem of this.transactions) {
-        let mfTransaction:MFTransaction = mfTransactionItem as MFTransaction;
-        if(this.transactionGroupMap.get(mfTransaction.scode) === undefined) {
-          let transactionArray : MFTransaction[] = [];
-          transactionArray.push(mfTransaction);
-          let mfTransactionGroup: MFTransactionGroup = new MFTransactionGroup(mfTransaction.transactionDate, mfTransaction.scode,mfTransaction.fundName, mfTransaction.amountInvested, this.getTransactionReturn(mfTransaction), this.getTransactionReturnPercentage(mfTransaction), this.getTransactionLatestFundValue(mfTransaction), transactionArray);
-          this.transactionGroupMap.set(mfTransaction.scode, mfTransactionGroup);
-        } else {
-          let mfTransactionGroup: MFTransactionGroup = this.transactionGroupMap.get(mfTransaction.scode);
-          mfTransactionGroup.totalInvestment = mfTransactionGroup.totalInvestment + mfTransaction.amountInvested;
-          mfTransactionGroup.totalReturn = mfTransactionGroup.totalReturn + this.getTransactionReturn(mfTransaction);
-          mfTransactionGroup.latestFundValue = mfTransactionGroup.latestFundValue + this.getTransactionLatestFundValue(mfTransaction)
-          mfTransactionGroup.transactions.push(mfTransaction);
-          this.transactionGroupMap.set(mfTransaction.scode, mfTransactionGroup);
-        }
+    // ngOnDestroy(){
+    //   this.sub.unsubscribe();
+    // }
+
+    private prepareMFTransactionGroup(mfTransaction:MFTransaction): void {
+
+      // for(let mfTransactionItem of this.transactions) {
+        // let mfTransaction:MFTransaction = mfTransactionItem as MFTransaction;
+      if(this.transactionGroupMap.get(mfTransaction.scode) === undefined) {
+        let transactionArray : MFTransaction[] = [];
+        transactionArray.push(mfTransaction);
+        let mfTransactionGroup: MFTransactionGroup = new MFTransactionGroup(mfTransaction.transactionDate, mfTransaction.scode,mfTransaction.fundName, mfTransaction.amountInvested, this.getTransactionReturn(mfTransaction), this.getTransactionReturnPercentage(mfTransaction), this.getTransactionLatestFundValue(mfTransaction), transactionArray);
+        this.transactionGroupMap.set(mfTransaction.scode, mfTransactionGroup);
+      } else {
+        let mfTransactionGroup: MFTransactionGroup = this.transactionGroupMap.get(mfTransaction.scode);
+        mfTransactionGroup.totalInvestment = mfTransactionGroup.totalInvestment + mfTransaction.amountInvested;
+        mfTransactionGroup.totalReturn = mfTransactionGroup.totalReturn + this.getTransactionReturn(mfTransaction);
+        mfTransactionGroup.latestFundValue = mfTransactionGroup.latestFundValue + this.getTransactionLatestFundValue(mfTransaction)
+        mfTransactionGroup.transactions.push(mfTransaction);
+        this.transactionGroupMap.set(mfTransaction.scode, mfTransactionGroup);
       }
+      // }
 
       this.transactionGroupList = [];
       this.transactionGroupMap.forEach((mfTransactionGroup: MFTransactionGroup, key: number) => {

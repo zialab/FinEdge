@@ -1,6 +1,7 @@
 import { Injectable }    from '@angular/core';
 import { Headers, Http, RequestOptions, Response } from '@angular/http';
 
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 
 import { Investment } from './investment';
@@ -11,7 +12,8 @@ import { MFNav } from './mf-nav-model';
 @Injectable()
 export class MFInvestmentService {
 
-  private mutualFundUrl = 'https://mutualfundsnav.p.mashape.com/';
+  //private mutualFundUrl = 'https://mutualfundsnav.p.mashape.com/';
+  private mutualFundUrl = 'https://mitanjos-india-mutual-fund-nav-prices-v1.p.mashape.com/';
   private headers : Headers = new Headers({
          'Content-Type': 'application/json',
          'Accept': 'application/json',
@@ -24,15 +26,21 @@ export class MFInvestmentService {
   //private headers = new Headers({'Content-Type': 'application/json','X-Mashape-Key': 'H5jTdzFVINmshqJUgY38yQfXZSJOp1XhcgojsnXEmHlRq5LFrU','Accept': 'application/json'});
   //private options = new RequestOptions({ headers: this.headers });
 
-
-  getLatestNav(scodes: number[]): Promise<MFNav[]> {
-    let bodyString = '{"scodes":' +JSON.stringify(scodes) +'}'; // Stringify payload
-
-    return  this.http.post(this.mutualFundUrl, bodyString , this.options)
-            .toPromise()
-            .then(this.extractData)
+  getLatestNav(schemeCode: number): Observable<MFNav> {
+    let url : string = this.mutualFundUrl+'quote/schemeCode/'+schemeCode;
+    return  this.http.get(url, this.options)
+            .map(res =>  res.json() as MFNav)
             .catch(this.handleError); // ...using post request
   }
+
+  // getLatestNav(scodes: number[]): Promise<MFNav[]> {
+  //   let bodyString = '{"scodes":' +JSON.stringify(scodes) +'}'; // Stringify payload
+  //
+  //   return  this.http.post(this.mutualFundUrl, bodyString , this.options)
+  //           .toPromise()
+  //           .then(this.extractData)
+  //           .catch(this.handleError); // ...using post request
+  // }
 
   getHistoricalNav(): Promise<Map<number, Array<MFNav>>> {
     let headers = new Headers({

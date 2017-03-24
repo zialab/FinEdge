@@ -21,13 +21,10 @@
             </template>
         </p-column>
         <p-column field="latestFundValue" header="Fund Value" [sortable]="true"></p-column>
-        <!-- <p-column field="charges" header="Charges" [sortable]="true"></p-column> -->
         <template let-transactionGroup pTemplate="rowexpansion">
           <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
             <div class="ui-grid-row">
               <p-dataTable [value]="transactionGroup.transactions" selectionMode="single" [(selection)]="selectedTransaction" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10" [responsive]="true">
-              <!-- <p-header>{{investmentName}} Transactions Details</p-header> -->
-              <!-- <p-column expander="true" styleClass="col-icon"></p-column> -->
               <p-column field="transactionDate" header="Trans. Date" [sortable]="true" [style]="{'overflow':'visible' }">
                   <template let-col let-transaction="rowData" pTemplate="body">
                        {{transaction[col.field]|date }}
@@ -37,7 +34,6 @@
                   </template>
               </p-column>
               <p-column field="folioNumber" header="Folio#" [sortable]="true"></p-column>
-              <!-- <p-column field="fundName" header="Fund Name" [sortable]="true"></p-column> -->
               <p-column field="amountInvested" header="Investment Value" [sortable]="true"></p-column>
               <p-column field="unitPrice" header="Unit Price" [sortable]="true"></p-column>
               <p-column field="totalUnits" header="Total Price" [sortable]="true">
@@ -60,7 +56,6 @@
                        {{getTransactionLatestFundValue(transaction)}}
                   </template>
               </p-column>
-              <!-- <p-column field="charges" header="Charges" [sortable]="true"></p-column> -->
               </p-dataTable>
             </div>
         </div>
