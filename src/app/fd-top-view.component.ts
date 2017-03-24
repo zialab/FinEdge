@@ -15,12 +15,12 @@ import { FDCalculator } from './fd-calculator';
 
 export class FDTopViewComponent implements OnInit {
     investmentName : string = "PD";
-    
+
     activeId: number;
 
     investment: Investment;
     transactions: Transaction[];
-    
+
     constructor(
         private investmentService: InvestmentService,
         private route: ActivatedRoute) { }
@@ -30,13 +30,13 @@ export class FDTopViewComponent implements OnInit {
             this.activeId = params['id'];
         });
         console.log("selected investment id "+this.activeId);
-        
+
         //this.investmentService.getTransactions(this.activeId).then(transactions => this.transactions = transactions);
-        
+
         this.investmentService.getInvestment(this.activeId).then(investment => {
             this.investment = investment;
             this.transactions = investment.transactions});
-        
+
     }
 
     getTotalInvestment(): number {
@@ -46,20 +46,25 @@ export class FDTopViewComponent implements OnInit {
         }
         return totalInvestment;
     }
-    
+
     getMaturityDate(): string{
-        
+
         let sortedTransaction = this.transactions;
-        sortedTransaction.sort(function(a,b) { 
+        sortedTransaction.sort(function(a,b) {
             return new Date(a.maturityDate).getTime() - new Date(b.maturityDate).getTime();
         });
-        
+
         let firstTransaction: Transaction = sortedTransaction[0];
         let firstMaturityDate: Date = new Date(firstTransaction.transactionDate);
-        
+
         return firstMaturityDate.toDateString();
     }
-    
+
+
+    getTotalReturnPercentage(): string {
+        return Math.round(((this.getTotalReturn()/this.getTotalInvestment())*100)*100)/100 + '%';
+    }
+
     getTotalReturn(): number{
         let totalReturn: number = 0;
         let fdCalc: FDCalculator;
@@ -69,7 +74,7 @@ export class FDTopViewComponent implements OnInit {
         }
         return totalReturn;
     }
-    
+
     getTotalMaturityAmount(): number{
         let maturityAmount: number = 0;
         let fdCalc: FDCalculator;

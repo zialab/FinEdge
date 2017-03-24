@@ -36,24 +36,23 @@ export class MFDataTableComponent implements OnInit {
     transactionGroupList: MFTransactionGroup[];
     private transactionGroupMap: Map<number, MFTransactionGroup> = new Map<number, MFTransactionGroup>();
     //mfCalculator: MFCalculator = new MFCalculator();//this.transactionGroupMap = new Map<number, MFTransactionGroup>();
-    errorMessage: string;
+    private errorMessage: string;
 
     constructor(
-        private investmentService: InvestmentService,
-        private mfInvestmentService: MFInvestmentService,
-        private route: ActivatedRoute,
-        private mfCalculator: MFCalculator) { }
+      private investmentService: InvestmentService,
+      private mfInvestmentService: MFInvestmentService,
+      private route: ActivatedRoute,
+      private mfCalculator: MFCalculator) { }
 
     ngOnInit() {
-        this.route.params.subscribe((params: Params) => {
-            this.activeId = params['id'];
+      this.route.params.subscribe((params: Params) => {
+          this.activeId = params['id'];
 
-//            this.investmentService.getInvestment(this.activeId).then(inv => this.investment = inv);
-//
-//            console.log("b44 switchMap selected investment ");
-//            console.log(this.investment);
-//            console.log("b44 switchMap selected transactions ");
-//            console.log(this.transactions);
+          //this.investmentService.getInvestment(this.activeId).then(inv => this.investment = inv);
+          //console.log("b44 switchMap selected investment ");
+          //console.log(this.investment);
+          //console.log("b44 switchMap selected transactions ");
+          //console.log(this.transactions);
         });
         console.log("selected investment id "+this.activeId);
 
@@ -64,16 +63,13 @@ export class MFDataTableComponent implements OnInit {
             let mfTransaction:MFTransaction = transaction as MFTransaction;
 
             this.mfInvestmentService.getLatestNav(mfTransaction.scode).subscribe(
-                       mfNav  => {
-                         this.mfCalculator.addMFNav(mfNav);
-                         this.prepareMFTransactionGroup(mfTransaction);
-                       },
-                       error =>  this.errorMessage = <any>error);
-          }
-
-
+              mfNav => {
+                this.mfCalculator.addMFNav(mfNav);
+                this.prepareMFTransactionGroup(mfTransaction);
+              },
+              error =>  this.errorMessage = <any>error);
+            }
         });
-
     }
 
     // ngOnDestroy(){
@@ -81,9 +77,6 @@ export class MFDataTableComponent implements OnInit {
     // }
 
     private prepareMFTransactionGroup(mfTransaction:MFTransaction): void {
-
-      // for(let mfTransactionItem of this.transactions) {
-        // let mfTransaction:MFTransaction = mfTransactionItem as MFTransaction;
       if(this.transactionGroupMap.get(mfTransaction.scode) === undefined) {
         let transactionArray : MFTransaction[] = [];
         transactionArray.push(mfTransaction);
@@ -97,7 +90,6 @@ export class MFDataTableComponent implements OnInit {
         mfTransactionGroup.transactions.push(mfTransaction);
         this.transactionGroupMap.set(mfTransaction.scode, mfTransactionGroup);
       }
-      // }
 
       this.transactionGroupList = [];
       this.transactionGroupMap.forEach((mfTransactionGroup: MFTransactionGroup, key: number) => {
@@ -107,81 +99,71 @@ export class MFDataTableComponent implements OnInit {
     }
 
     showDialogToAdd() {
-        this.newTransaction = true;
-        this.transaction = new MFTransaction(0, new Date(), 0, 0, new Date(), 0, 0, 0, 'Daily', 'Quaterly',1234, '121csd21', 'ABC',1234);
-        this.displayDialog = true;
+      this.newTransaction = true;
+      this.transaction = new MFTransaction(0, new Date(), 0, 0, new Date(), 0, 0, 0, 'Daily', 'Quaterly',1234, '121csd21', 'ABC',1234);
+      this.displayDialog = true;
     }
 
     save() {
-        if(this.newTransaction)
-            this.transactions.push(this.transaction);
-        else
-            this.transactions[this.findSelectedTransactionIndex()] = this.transaction;
+      if(this.newTransaction)
+          this.transactions.push(this.transaction);
+      else
+          this.transactions[this.findSelectedTransactionIndex()] = this.transaction;
 
-        this.transaction = null;
-        this.displayDialog = false;
+      this.transaction = null;
+      this.displayDialog = false;
     }
 
     delete() {
-        this.transactions.splice(this.findSelectedTransactionIndex(), 1);
-        this.transaction = null;
-        this.displayDialog = false;
+      this.transactions.splice(this.findSelectedTransactionIndex(), 1);
+      this.transaction = null;
+      this.displayDialog = false;
     }
 
     onRowSelect(event) {
-        this.newTransaction = false;
-        this.transaction = this.cloneTransaction(event.data);
-        this.displayDialog = true;
+      this.newTransaction = false;
+      this.transaction = this.cloneTransaction(event.data);
+      this.displayDialog = true;
     }
 
     cloneTransaction(t: MFTransaction): MFTransaction {
-        let transaction = new MFTransaction(0, new Date(), 0, 0, new Date(), 0, 0, 0, 'Daily', 'Quaterly',1234, '121csd21', 'ABC',1234);
-        for(let prop in t) {
-            transaction[prop] = t[prop];
-        }
-        return transaction;
+      let transaction = new MFTransaction(0, new Date(), 0, 0, new Date(), 0, 0, 0, 'Daily', 'Quaterly',1234, '121csd21', 'ABC',1234);
+      for(let prop in t) {
+          transaction[prop] = t[prop];
+      }
+      return transaction;
     }
 
     findSelectedTransactionIndex(): number {
-        return this.transactions.indexOf(this.selectedMFTransactionGroup);
+      return this.transactions.indexOf(this.selectedMFTransactionGroup);
     }
 
-    getTransactionLatestFundValue(t: MFTransaction): number{
-        return this.mfCalculator.getTransactionLatestFundValue(t);
+    private getTransactionLatestFundValue(t: MFTransaction): number{
+      return this.mfCalculator.getTransactionLatestFundValue(t);
     }
 
-    getTransactionReturn(t: MFTransaction): number {
-        return this.mfCalculator.getTransactionReturn(t);
+    private getTransactionReturn(t: MFTransaction): number {
+      return this.mfCalculator.getTransactionReturn(t);
     }
 
-    getTransactionReturnPercentage(t: MFTransaction): number {
-        return this.mfCalculator.getTransactionReturnPercentage(t);
+    private getTransactionReturnPercentage(t: MFTransaction): number {
+      return this.mfCalculator.getTransactionReturnPercentage(t);
     }
 
-    getTransactionUnits(transaction: MFTransaction): number{
-        return this.mfCalculator.getTransactionUnits(transaction);
+    private getTransactionUnits(transaction: MFTransaction): number{
+      return this.mfCalculator.getTransactionUnits(transaction);
     }
 
-    getReturnPercentage(mfTransactionGroup: MFTransactionGroup): number {
-      return Math.round(((mfTransactionGroup.totalReturn/this.getTransactionGroupInvestment(mfTransactionGroup.transactions))*100)*100)/100;
+    private getReturnPercentage(mfTransactionGroup: MFTransactionGroup): number {
+      return Math.round(((mfTransactionGroup.totalReturn/mfTransactionGroup.totalInvestment)*100)*100)/100;
     }
 
     private getTransactionGroupInvestment(transactions : MFTransaction[]): number {
-        let totalInvestment: number = 0;
-        for (let transaction of this.transactions) {
-            totalInvestment = totalInvestment + transaction.amountInvested;
-        }
-        return totalInvestment;
+      let totalInvestment: number = 0;
+      for (let transaction of this.transactions) {
+          totalInvestment = totalInvestment + transaction.amountInvested;
+      }
+      return totalInvestment;
     }
 
-    // private getTotalUnits(): number{
-    //   let totalUnits: number = 0;
-    //   for (let transaction of this.transactions) {
-    //       totalUnits = totalUnits + this.getTransactionUnits(transaction as MFTransaction);
-    //   }
-    //   return totalUnits;
-    // }
-    // getMFTransactions(scode: number) : MFTransaction[] {
-    //   return this.transactionGroupMap.get(scode).transactions;
-    // }
 }

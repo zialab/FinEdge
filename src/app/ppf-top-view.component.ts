@@ -15,12 +15,12 @@ import { PPFCalculator } from './ppf-calculator';
 
 export class PPFTopViewComponent implements OnInit {
     investmentName : string = "PPF";
-    
+
     activeId: number;
 
     investment: Investment;
     transactions: Transaction[];
-    
+
     constructor(
         private investmentService: InvestmentService,
         private route: ActivatedRoute) { }
@@ -30,13 +30,13 @@ export class PPFTopViewComponent implements OnInit {
             this.activeId = params['id'];
         });
         console.log("selected investment id "+this.activeId);
-        
+
         //this.investmentService.getTransactions(this.activeId).then(transactions => this.transactions = transactions);
-        
+
         this.investmentService.getInvestment(this.activeId).then(investment => {
             this.investment = investment;
             this.transactions = investment.transactions});
-        
+
     }
 
     getTotalInvestment(): number {
@@ -46,21 +46,25 @@ export class PPFTopViewComponent implements OnInit {
         }
         return totalInvestment;
     }
-    
+
     getMaturityDate(): string{
-        
+
         let sortedTransaction = this.transactions;
-        sortedTransaction.sort(function(a,b) { 
+        sortedTransaction.sort(function(a,b) {
             return new Date(a.transactionDate).getTime() - new Date(b.transactionDate).getTime();
         });
-        
+
         let firstTransaction: Transaction = sortedTransaction[0];
         let firstTransactionDate: Date = new Date(firstTransaction.transactionDate);
         firstTransactionDate.setFullYear(firstTransactionDate.getFullYear()+this.investment.lockInPeriod);
-        
+
         return firstTransactionDate.toDateString();
     }
-    
+
+    getTotalReturnPercentage(): string {
+        return Math.round(((this.getTotalReturn()/this.getTotalInvestment())*100)*100)/100 + '%';
+    }
+
     getTotalReturn(): number{
         let totalReturn: number = 0;
         let ppfCalc: PPFCalculator;
@@ -70,7 +74,7 @@ export class PPFTopViewComponent implements OnInit {
         }
         return totalReturn;
     }
-    
+
     getTotalMaturityAmount(): number{
         let maturityAmount: number = 0;
         let ppfCalc: PPFCalculator;
