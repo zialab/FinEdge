@@ -5,33 +5,45 @@ import { HttpModule } from '@angular/http';
 import { RouterModule }   from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-import {NgxChartsModule} from '@swimlane/ngx-charts';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import 'rxjs/add/operator/toPromise';
 
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryInvestmentsDataService }  from './in-memory-investments-data.service';
-//import { DataTableModule } from 'angular-2-data-table';
 
-import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard.component';
-import { InvestmentDetailComponent } from './investment-detail.component';
-import { InvestmentsComponent } from './investments.component';
-import { InvestmentService } from './investment.service';
-import { InvestmentSearchComponent } from './investment-search.component';
-
-//import { DataTableDemo1 } from './demo1/data-table-demo1';
-//import { DataTableDemo1Remote } from './demo1/data-table-demo1-remote';
-import { FDTopViewComponent } from './fd-top-view.component';
-import { FDDataTableComponent } from './fd-data-table.component';
-import { PPFTopViewComponent } from './ppf-top-view.component';
-import { PPFDataTableComponent } from './ppf-data-table.component';
-import { MFTopViewComponent } from './mf-top-view.component';
-import { MFDataTableComponent } from './mf-data-table.component';
-import { MFInvestmentService } from './mf-investment.service';
-import { MFCalculator } from './mf-calculator';
-
+//App
 import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+//dashboard
+import { DashboardComponent } from './dashboard/dashboard.component';
+
+//investment
+import { InvestmentsComponent } from './investment/investment/investments.component';
+import { InvestmentDetailComponent } from './investment/investment-detail/investment-detail.component';
+import { InvestmentSearchComponent } from './investment/investment-search/investment-search.component';
+import { InvestmentService } from './investment/investment.service';
+
+//fd
+import { FDDataTableComponent } from './fd/datatable/fd-data-table.component';
+import { FDTopViewComponent } from './fd/topview/fd-top-view.component';
+
+//ppf
+import { PPFDataTableComponent } from './ppf/datatable/ppf-data-table.component';
+import { PPFTopViewComponent } from './ppf/topview/ppf-top-view.component';
+
+//mf
+import { MFDataTableComponent } from './mf/datatable/mf-data-table.component';
+import { MFTopViewComponent } from './mf/topview/mf-top-view.component';
+import { MFInvestmentService } from './mf/mf-investment.service';
+import { MFCalculator } from './mf/mf-calculator';
+
+//equity
+import { EquityDataTableComponent } from './equity/datatable/equity-data-table.component';
+import { EquityTopViewComponent } from './equity/topview/equity-top-view.component';
+import { EquityInvestmentService } from './equity/equity-investment.service';
+import { EquityCalculator } from './equity/equity-calculator';
 
 import {InputTextModule,DataTableModule,ButtonModule,DialogModule,CalendarModule} from 'primeng/primeng';
 
@@ -45,6 +57,7 @@ import {InputTextModule,DataTableModule,ButtonModule,DialogModule,CalendarModule
         PPFTopViewComponent,
         FDDataTableComponent,
         PPFDataTableComponent,
+        EquityDataTableComponent,
         FDTopViewComponent,
         MFTopViewComponent,
         MFDataTableComponent
@@ -62,7 +75,9 @@ import {InputTextModule,DataTableModule,ButtonModule,DialogModule,CalendarModule
     providers: [
         InvestmentService,
         MFInvestmentService,
-        MFCalculator
+        MFCalculator,
+        EquityInvestmentService,
+        EquityCalculator
     ],
     bootstrap: [
         AppComponent

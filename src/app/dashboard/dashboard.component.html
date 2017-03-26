@@ -1,0 +1,20 @@
+<h3>Top Investments</h3>
+
+<div *ngIf="single">
+  <ngx-charts-advanced-pie-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="single"
+    [gradient]="gradient"
+    (select)="onSelect($event)">
+  </ngx-charts-advanced-pie-chart>
+</div>
+
+<div class="grid grid-pad">
+  <div *ngFor="let investment of investments" [routerLink]="['/detail', investment.id]" class="col-1-4">
+    <div class="module investment">
+      <h4>{{investment.name}}</h4>
+    </div>
+  </div>
+</div>
+<investment-search></investment-search>

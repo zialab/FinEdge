@@ -1,0 +1,26 @@
+<div *ngIf="investment">
+    <div *ngIf="investment.investmentId === 'investment-equity'">
+        <mf-top-view></mf-top-view>
+        <div style="margin-top: 100px;">
+            <equity-data-table></equity-data-table>
+        </div>
+    </div>
+    <div *ngIf="investment.investmentId === 'investment-mf'">
+        <mf-top-view></mf-top-view>
+        <div style="margin-top: 100px;">
+            <mf-data-table></mf-data-table>
+        </div>
+    </div>
+    <div *ngIf="investment.investmentId === 'investment-ppf'">
+        <ppf-top-view></ppf-top-view>
+        <div style="margin-top: 100px;">
+            <ppf-data-table></ppf-data-table>
+        </div>
+    </div>
+    <div *ngIf="investment.investmentId === 'investment-fd'">
+        <fd-top-view></fd-top-view>
+        <div style="margin-top: 100px;">
+            <fd-data-table></fd-data-table>
+        </div>
+    </div>
+</div>

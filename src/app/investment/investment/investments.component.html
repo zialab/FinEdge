@@ -1,0 +1,24 @@
+<h2>My Investments</h2>
+<div>
+  <label>Investment name:</label> <input #investmentName />
+  <button (click)="add(investmentName.value); investmentName.value=''">
+    Add
+  </button>
+</div>
+
+    <ul class="investments">
+      <li *ngFor="let investment of investments"
+        [class.selected]="investment === selectedInvestment"
+        (click)="onSelect(investment)">
+        <span class="badge">{{investment.investerId}}</span> {{investment.investmentId}}
+        <span>{{investment.name}}</span>
+        <button class="delete"
+            (click)="delete(investment); $event.stopPropagation()">x</button>
+      </li>
+    </ul>
+<div *ngIf="selectedInvestment">
+  <h2>
+    {{selectedInvestment.investmentId | uppercase}} is my Investment
+  </h2>
+  <button (click)="gotoDetail()">View Details</button>
+</div>

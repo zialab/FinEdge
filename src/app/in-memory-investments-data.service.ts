@@ -6,14 +6,12 @@ export class InMemoryInvestmentsDataService implements InMemoryDbService {
             {
                 id:1,
                 investerId: 'zia1',
-                investmentId: 'investment-pf1',
-                name: 'fixed deposit',
+                investmentId: 'investment-equity',
+                name: 'Stocks',
                 lockInPeriod : 0,
                 transactions: [
-                    { transactionDate:'2016-04-23T18:25:43.511Z', amountInvested:1234, rateOfReturn:8, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-25T18:25:43.511Z', amountInvested:1234, rateOfReturn:7.5, maturityDate:'2017-04-01T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-26T18:25:43.511Z', amountInvested:1234, rateOfReturn:8.3, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-27T18:25:43.511Z', amountInvested:1234, rateOfReturn:7.1, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'}
+                  { transactionDate:'2017-03-06T18:25:43.511Z', folioNumber:'0', scode:532400, stockName:'KPIT Technologies', stockShortName:"DABUR", amountInvested:0, unitPrice:280.15, units:50, rateOfReturn:0, maturityDate:'2017-04-01T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
+                  { transactionDate:'2017-03-21T18:25:43.511Z', folioNumber:'0', scode:500096, stockName:'Dabur India', stockShortName:"KPIT", amountInvested:0, unitPrice:134.85	, units:100, rateOfReturn:0, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'}
                 ]
             },
             {
@@ -28,7 +26,7 @@ export class InMemoryInvestmentsDataService implements InMemoryDbService {
                     { transactionDate:'2017-02-06T18:25:43.511Z', folioNumber:'3921427/79', scode:104772, fundName:'DSP BlackRock Tax Saver Fund - Regular Plan - Growth', amountInvested:2500, unitPrice:39.5440, rateOfReturn:0, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
                     { transactionDate:'2017-02-06T18:25:43.511Z', folioNumber:'3921428/79', scode:112090, fundName:'Kotak Select Focus Fund - Growth', amountInvested:2500, unitPrice:27.5920, rateOfReturn:0, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
                     { transactionDate:'2017-03-07T18:25:43.511Z', folioNumber:'3921430/79', scode:104772, fundName:'DSP BlackRock Tax Saver Fund - Regular Plan - Growth', amountInvested:2500, unitPrice:39.3830, rateOfReturn:0, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2017-03-07T18:25:43.511Z', folioNumber:'3921429/79', scode:112090, fundName:'Kotak Select Focus Fund - Growth', amountInvested:2500, unitPrice:27.8570, rateOfReturn:0, maturityDate:'2017-04-01T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
+                    { transactionDate:'2017-03-07T18:25:43.511Z', folioNumber:'3921429/79', scode:112090, fundName:'Kotak Select Focus Fund - Growth', amountInvested:2500, unitPrice:27.8570, rateOfReturn:0, maturityDate:'2017-04-01T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'}
 
                 ]
             },
@@ -65,45 +63,6 @@ export class InMemoryInvestmentsDataService implements InMemoryDbService {
                     { transactionDate:'2015-05-05T18:25:43.511Z', amountInvested:100000, rateOfReturn:8.3, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
                     { transactionDate:'2016-06-07T18:25:43.511Z', amountInvested:125000, rateOfReturn:7.1, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
                     { transactionDate:'2016-06-08T18:25:43.511Z', amountInvested:25000, rateOfReturn:7.1, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'}
-                ]
-            },
-            {
-                id:5,
-                investerId : 'zia5',
-                investmentId : 'investment-pf5',
-                name: 'fixed deposit5',
-                lockInPeriod : 0,
-                transactions:[
-                    { transactionDate:'2016-04-23T18:25:43.511Z', amountInvested:1234, rateOfReturn:8, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-25T18:25:43.511Z', amountInvested:1234, rateOfReturn:7.5, maturityDate:'2017-04-01T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-26T18:25:43.511Z', amountInvested:1234, rateOfReturn:8.3, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-27T18:25:43.511Z', amountInvested:1234, rateOfReturn:7.1, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'}
-                ]
-            },
-            {
-                id:6,
-                investerId : 'zia6',
-                investmentId : 'investment-pf6',
-                name: 'fixed deposit6',
-                lockInPeriod : 0,
-                transactions:[
-                    { transactionDate:'2016-04-23T18:25:43.511Z', amountInvested:'10000', rateOfReturn:8, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-25T18:25:43.511Z', amountInvested:'12000', rateOfReturn:7.5, maturityDate:'2017-04-01T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-26T18:25:43.511Z', amountInvested:'15000', rateOfReturn:8.3, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-27T18:25:43.511Z', amountInvested:'10000', rateOfReturn:7.1, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'}
-                ]
-            },
-            {
-                id:7,
-                investerId : 'zia7',
-                investmentId : 'investment-pf7',
-                name: 'fixed deposit7',
-                lockInPeriod : 0,
-                transactions:[
-                   { transactionDate:'2016-04-23T18:25:43.511Z', amountInvested:1234, rateOfReturn:8, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-25T18:25:43.511Z', amountInvested:1234, rateOfReturn:7.5, maturityDate:'2017-04-01T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-26T18:25:43.511Z', amountInvested:1234, rateOfReturn:8.3, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                    { transactionDate:'2016-04-27T18:25:43.511Z', amountInvested:1234, rateOfReturn:7.1, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'}
                 ]
             }
         ];

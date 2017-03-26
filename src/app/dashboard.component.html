@@ -1,9 +1,0 @@
-<h3>Top Investments</h3>
-<div class="grid grid-pad">
-  <div *ngFor="let investment of investments" [routerLink]="['/detail', investment.id]" class="col-1-4">
-    <div class="module investment">
-      <h4>{{investment.name}}</h4>
-    </div>
-  </div>
-</div>
-<investment-search></investment-search>

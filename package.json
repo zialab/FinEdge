@@ -24,8 +24,8 @@
     "angular-in-memory-web-api": "latest",
     "core-js": "^2.4.1",
     "d3": "^4.7.3",
-    "primeng": "^2.0.2",
     "font-awesome": "^4.7.0",
+    "primeng": "^2.0.2",
     "rxjs": "^5.1.0",
     "zone.js": "^0.7.6"
   },
