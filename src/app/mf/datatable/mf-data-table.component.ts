@@ -6,7 +6,7 @@ import { TransactionI } from '../../model/transaction-interface';
 import { MFCalculator } from './../mf-calculator';
 import { Transaction } from '../../model/transaction';
 import { MFTransaction } from '../model/mf-transaction';
-import { MFTransactionGroup } from '../../model/mf-transaction-group';
+import { MFTransactionGroup } from '../model/mf-transaction-group';
 import { MFNav } from '../../model/mf-nav-model';
 import { MFInvestmentService } from './../mf-investment.service';
 

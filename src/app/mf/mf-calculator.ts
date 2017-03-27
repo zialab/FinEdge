@@ -2,7 +2,7 @@ import { Injectable }    from '@angular/core';
 
 import { TransactionI } from '../model/transaction-interface';
 import { Transaction } from '../model/transaction';
-import { MFTransaction } from '../model/mf-transaction';
+import { MFTransaction } from './model/mf-transaction';
 import { MFInvestmentService } from './mf-investment.service';
 import { MFNav } from '../model/mf-nav-model';
 import { MFData } from '../model/mf-data.model';

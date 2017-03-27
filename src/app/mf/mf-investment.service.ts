@@ -5,8 +5,6 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 
 import { Investment } from '../model/investment';
-import { MFTransaction } from './model/mf-transaction';
-import { TransactionI } from '../model/transaction-interface';
 import { MFNav } from '../model/mf-nav-model';
 
 @Injectable()
