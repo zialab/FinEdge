@@ -51,7 +51,7 @@ export class EquityTopViewComponent implements OnInit {
 
             this.equityInvestmentService.getLatestNav(mfTransaction.scode).subscribe(
               mfNav => {
-                this.mfCalculator.addMFNav(mfNav);
+                this.equityCalculator.addStockPrice(mfNav);
                 this.prepareMFTransactionGroup(mfTransaction);
               },
               error =>  this.errorMessage = <any>error);
