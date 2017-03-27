@@ -2,16 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 
 import { InvestmentService } from '../../investment/investment.service';
-import { TransactionI } from '../../model/transaction-interface';
-import { MFCalculator } from '../../mf/mf-calculator';
+//import { TransactionI } from '../../model/transaction-interface';
+import { EquityCalculator } from '../equity-calculator';
 import { Transaction } from '../../model/transaction';
-import { MFTransaction } from '../../mf/model/mf-transaction';
-import { MFTransactionGroup } from '../../mf/model/mf-transaction-group';
-import { MFNav } from '../../model/mf-nav-model';
-//import { RateFrequency } from './rate-frequency';
-//import { CalculationFrequency } from './calculation-frequency';
-import { MFInvestmentService } from '../../mf/mf-investment.service';
-
+import { EquityTransaction } from '../model/equity-transaction';
+import { EquityTransactionGroup } from '../model/equity-transaction-group';
+import { EquityInvestmentService } from '../equity-investment.service';
+import { StckPrice } from '../model/stock-price.model';
 
 @Component({
     selector: 'equity-data-table',
@@ -20,29 +17,29 @@ import { MFInvestmentService } from '../../mf/mf-investment.service';
 })
 
 export class EquityDataTableComponent implements OnInit {
-    investmentName : string = "MF";
+    investmentName : string = "Stocks";
 
     activeId: number;
 
     displayDialog: boolean;
 
-    transaction: MFTransaction = new MFTransaction(0, new Date(), 0, 0, 0, 0, 0, 1234, '121csd21', 'ABC',1234, new Date());
+    transaction: EquityTransaction = new EquityTransaction(0, new Date(), 0, 0, 0, 0, 0, 1234, 'Stock Name', 'Short Name', 0, 0, new Date());
 
-    selectedMFTransactionGroup: MFTransaction;
+    selectedMFTransactionGroup: EquityTransaction;
 
     newTransaction: boolean;
 
-    private transactions: TransactionI[]=[];
-    transactionGroupList: MFTransactionGroup[];
-    private transactionGroupMap: Map<number, MFTransactionGroup> = new Map<number, MFTransactionGroup>();
-    //mfCalculator: MFCalculator = new MFCalculator();//this.transactionGroupMap = new Map<number, MFTransactionGroup>();
+    private transactions: Transaction[]=[];
+    transactionGroupList: EquityTransactionGroup[];
+    private transactionGroupMap: Map<number, EquityTransactionGroup> = new Map<number, EquityTransactionGroup>();
+    //equityCalculator: MFCalculator = new MFCalculator();//this.transactionGroupMap = new Map<number, MFTransactionGroup>();
     private errorMessage: string;
 
     constructor(
       private investmentService: InvestmentService,
-      private mfInvestmentService: MFInvestmentService,
+      private equityInvestmentService: EquityInvestmentService,
       private route: ActivatedRoute,
-      private mfCalculator: MFCalculator) { }
+      private equityCalculator: EquityCalculator) { }
 
     ngOnInit() {
       this.route.params.subscribe((params: Params) => {
@@ -58,14 +55,14 @@ export class EquityDataTableComponent implements OnInit {
 
         this.investmentService.getTransactions(this.activeId).then(transactions => {
           //this.transactions = transactions;
-          //this.mfCalculator.refreshNav(this.transactions);
+          //this.equityCalculator.refreshNav(this.transactions);
           for(let transaction of transactions) {
-            let mfTransaction:MFTransaction = transaction as MFTransaction;
+            let equityTransaction:EquityTransaction = transaction as EquityTransaction;
 
-            this.mfInvestmentService.getLatestNav(mfTransaction.scode).subscribe(
-              mfNav => {
-                this.mfCalculator.addMFNav(mfNav);
-                this.prepareMFTransactionGroup(mfTransaction);
+            this.equityInvestmentService.getLatestNav(equityTransaction.scode).subscribe(
+              stckPrice => {
+                this.equityCalculator.addStockPrice(stckPrice);
+                this.prepareMFTransactionGroup(equityTransaction);
               },
               error =>  this.errorMessage = <any>error);
             }
@@ -76,31 +73,34 @@ export class EquityDataTableComponent implements OnInit {
     //   this.sub.unsubscribe();
     // }
 
-    private prepareMFTransactionGroup(mfTransaction:MFTransaction): void {
-      if(this.transactionGroupMap.get(mfTransaction.scode) === undefined) {
-        let transactionArray : MFTransaction[] = [];
-        transactionArray.push(mfTransaction);
-        let mfTransactionGroup: MFTransactionGroup = new MFTransactionGroup(mfTransaction.transactionDate, mfTransaction.scode,mfTransaction.fundName, mfTransaction.amountInvested, this.getTransactionReturn(mfTransaction), this.getTransactionReturnPercentage(mfTransaction), this.getTransactionLatestFundValue(mfTransaction), transactionArray);
-        this.transactionGroupMap.set(mfTransaction.scode, mfTransactionGroup);
+    private prepareMFTransactionGroup(equityTransaction:EquityTransaction): void {
+      if(this.transactionGroupMap.get(equityTransaction.scode) === undefined) {
+        let transactionArray : EquityTransaction[] = [];
+        transactionArray.push(equityTransaction);
+        let equityTransactionGroup: EquityTransactionGroup = new EquityTransactionGroup(equityTransaction.transactionDate, equityTransaction.scode,
+          equityTransaction.stockName, equityTransaction.stockShortName, equityTransaction.unitPrice, equityTransaction.units,
+          this.getTotalInvestment(equityTransaction), this.getLatestUnitPrice(equityTransaction) ,this.getTransactionReturn(equityTransaction),
+          this.getTransactionReturnPercentage(equityTransaction), this.getTransactionLatestInvestmentValue(equityTransaction), transactionArray);
+          this.transactionGroupMap.set(equityTransaction.scode, equityTransactionGroup);
       } else {
-        let mfTransactionGroup: MFTransactionGroup = this.transactionGroupMap.get(mfTransaction.scode);
-        mfTransactionGroup.totalInvestment = mfTransactionGroup.totalInvestment + mfTransaction.amountInvested;
-        mfTransactionGroup.totalReturn = mfTransactionGroup.totalReturn + this.getTransactionReturn(mfTransaction);
-        mfTransactionGroup.latestFundValue = mfTransactionGroup.latestFundValue + this.getTransactionLatestFundValue(mfTransaction)
-        mfTransactionGroup.transactions.push(mfTransaction);
-        this.transactionGroupMap.set(mfTransaction.scode, mfTransactionGroup);
+        let equityTransactionGroup: EquityTransactionGroup = this.transactionGroupMap.get(equityTransaction.scode);
+        equityTransactionGroup.totalInvestment = equityTransactionGroup.totalInvestment + this.getTotalInvestment(equityTransaction);
+        equityTransactionGroup.totalReturn = equityTransactionGroup.totalReturn + this.getTransactionReturn(equityTransaction);
+        equityTransactionGroup.latestInvestmentValue = equityTransactionGroup.latestInvestmentValue + this.getTransactionLatestInvestmentValue(equityTransaction)
+        equityTransactionGroup.transactions.push(equityTransaction);
+        this.transactionGroupMap.set(equityTransaction.scode, equityTransactionGroup);
       }
 
       this.transactionGroupList = [];
-      this.transactionGroupMap.forEach((mfTransactionGroup: MFTransactionGroup, key: number) => {
-        mfTransactionGroup.returnPercentage = this.getReturnPercentage(mfTransactionGroup);
-        this.transactionGroupList.push(mfTransactionGroup);
+      this.transactionGroupMap.forEach((equityTransactionGroup: EquityTransactionGroup, key: number) => {
+        equityTransactionGroup.returnPercentage = this.getReturnPercentage(equityTransactionGroup);
+        this.transactionGroupList.push(equityTransactionGroup);
       });
     }
 
     showDialogToAdd() {
       this.newTransaction = true;
-      this.transaction = new MFTransaction(0, new Date(), 0, 0, 0, 0, 0, 1234, '121csd21', 'ABC',1234, new Date());
+      this.transaction = new EquityTransaction(0, new Date(), 0, 0, 0, 0, 0, 1234, 'Stock Name', 'Short Name', 0, 0, new Date());
       this.displayDialog = true;
     }
 
@@ -126,8 +126,8 @@ export class EquityDataTableComponent implements OnInit {
       this.displayDialog = true;
     }
 
-    cloneTransaction(t: MFTransaction): MFTransaction {
-      let transaction = new MFTransaction(0, new Date(), 0, 0, 0, 0, 0, 1234, '121csd21', 'ABC',1234, new Date());
+    cloneTransaction(t: EquityTransaction): EquityTransaction {
+      let transaction = new EquityTransaction(0, new Date(), 0, 0, 0, 0, 0, 1234, 'Stock Name', 'Short Name', 0, 0, new Date());
       for(let prop in t) {
           transaction[prop] = t[prop];
       }
@@ -138,27 +138,31 @@ export class EquityDataTableComponent implements OnInit {
       return this.transactions.indexOf(this.selectedMFTransactionGroup);
     }
 
-    private getTransactionLatestFundValue(t: MFTransaction): number{
-      return this.mfCalculator.getTransactionLatestFundValue(t);
+    private getLatestUnitPrice(t: EquityTransaction): number{
+      return this.equityCalculator.getLatestUnitPrice(t);
     }
 
-    private getTransactionReturn(t: MFTransaction): number {
-      return this.mfCalculator.getTransactionReturn(t);
+    private getTotalInvestment(t: EquityTransaction): number{
+      return this.equityCalculator.getTotalInvestment(t);
     }
 
-    private getTransactionReturnPercentage(t: MFTransaction): number {
-      return this.mfCalculator.getTransactionReturnPercentage(t);
+    private getTransactionLatestInvestmentValue(t: EquityTransaction): number {
+      return this.equityCalculator.getTransactionLatestInvestmentValue(t);
     }
 
-    private getTransactionUnits(transaction: MFTransaction): number{
-      return this.mfCalculator.getTransactionUnits(transaction);
+    private getTransactionReturn(t: EquityTransaction): number {
+      return this.equityCalculator.getTransactionReturn(t);
     }
 
-    private getReturnPercentage(mfTransactionGroup: MFTransactionGroup): number {
-      return Math.round(((mfTransactionGroup.totalReturn/mfTransactionGroup.totalInvestment)*100)*100)/100;
+    private getTransactionReturnPercentage(t: EquityTransaction): number {
+      return this.equityCalculator.getTransactionReturnPercentage(t);
     }
 
-    private getTransactionGroupInvestment(transactions : MFTransaction[]): number {
+    private getReturnPercentage(equityTransactionGroup: EquityTransactionGroup): number {
+      return Math.round(((equityTransactionGroup.totalReturn/equityTransactionGroup.totalInvestment)*100)*100)/100;
+    }
+
+    private getTransactionGroupInvestment(transactions : EquityTransaction[]): number {
       let totalInvestment: number = 0;
       for (let transaction of this.transactions) {
           totalInvestment = totalInvestment + transaction.amountInvested;

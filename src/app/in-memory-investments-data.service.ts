@@ -10,8 +10,8 @@ export class InMemoryInvestmentsDataService implements InMemoryDbService {
                 name: 'Stocks',
                 lockInPeriod : 0,
                 transactions: [
-                  { transactionDate:'2017-03-06T18:25:43.511Z', folioNumber:'0', scode:532400, stockName:'KPIT Technologies', stockShortName:"DABUR", amountInvested:0, unitPrice:280.15, units:50, rateOfReturn:0, maturityDate:'2017-04-01T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'},
-                  { transactionDate:'2017-03-21T18:25:43.511Z', folioNumber:'0', scode:500096, stockName:'Dabur India', stockShortName:"KPIT", amountInvested:0, unitPrice:134.85	, units:100, rateOfReturn:0, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10, rateFrequency:'Years',calculationFrequency:'Quaterly'}
+                  { transactionDate:'2017-03-06T18:25:43.511Z', scode:532400, stockName:'KPIT Technologies', stockShortName:"DABUR", amountInvested:0, unitPrice:280.15, units:50, rateOfReturn:0, maturityDate:'2017-04-01T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10},
+                  { transactionDate:'2017-03-21T18:25:43.511Z', scode:500096, stockName:'Dabur India', stockShortName:"KPIT", amountInvested:0, unitPrice:134.85	, units:100, rateOfReturn:0, maturityDate:'2017-04-23T18:25:43.511Z',amountAtMaturity:0, returns:0, charges:10}
                 ]
             },
             {

@@ -4,16 +4,16 @@ import { RateFrequency } from '../model/rate-frequency';
 import { CalculationFrequency } from '../model/calculation-frequency';
 import { TransactionI } from '../model/transaction-interface';
 import { Transaction } from '../model/transaction';
-import { MFTransaction } from '../mf/model/mf-transaction';
+import { EquityTransaction } from './model/equity-transaction';
 import { EquityInvestmentService } from './equity-investment.service';
-import { MFNav } from '../model/mf-nav-model';
-import { MFData } from '../model/mf-data.model';
+import { StckPrice } from './model/stock-price.model';
+//import { MFData } from '../model/mf-data.model';
 
 @Injectable()
 export class EquityCalculator {
 
     private investmentAmount : number = 0;
-    private navs : Array<MFNav> = [];
+    private stockPrices : Array<StckPrice> = [];
 
     constructor(private mfInvestmentService: EquityInvestmentService) { }
 
@@ -29,58 +29,67 @@ export class EquityCalculator {
     //   }
     // }
 
-    addMFNav(mfNav: MFNav): void {
-      this.navs.push(mfNav);
+    addStockPrice(stckPrice: StckPrice): void {
+      this.stockPrices.push(stckPrice);
     }
 
     private isMFNavIncludes(scode: number): boolean {
       let result :boolean = false;
-      this.navs.forEach(navItem => {
-        navItem.data.forEach(dataItem => {
-            if(dataItem.schmCode == scode) {
-              result = true;
-            }
-        });
+      this.stockPrices.forEach(stockItem => {
+        // stockItem.data.forEach(dataItem => {
+        //     if(dataItem.schmCode == scode) {
+        //       result = true;
+        //     }
+        // });
       });
       return result;
     }
-    getTransactionUnits(transaction: MFTransaction): number{
+    getTransactionUnits(transaction: EquityTransaction): number{
         let totalUnits : number = transaction.amountInvested/transaction.unitPrice;
         return Math.round(totalUnits*100)/100;
     }
 
-    getTransactionLatestFundValue(transaction: MFTransaction) : number {
+    getTransactionLatestFundValue(transaction: EquityTransaction) : number {
         let latestValue : number = this.getTransactionUnits(transaction) * this.getLatestNav(transaction);
         return Math.round(latestValue*100)/100;;
     }
 
-    getLatestNav(transaction: MFTransaction) : number{
+    getLatestNav(transaction: EquityTransaction) : number{
       let resultNavVal : number;
-      this.navs.forEach(navItem => {
-        //let data : Array<MFData> = navItem.data;
-        navItem.data.forEach(dataItem => {
-            if(dataItem.schmCode == transaction.scode) {
-              resultNavVal = dataItem.navVal;
-            }
-        });
+      this.stockPrices.forEach(stockItem => {
+        // stockItem.data.forEach(dataItem => {
+        //     if(dataItem.schmCode == transaction.scode) {
+        //       resultNavVal = dataItem.navVal;
+        //     }
+        // });
       });
 
-      return resultNavVal;
+      // return resultNavVal;
+      return 101;
     }
 
-    getTransactionReturn(transaction: MFTransaction) : number {
+    getTransactionReturn(transaction: EquityTransaction) : number {
         return Math.round((this.getTransactionLatestFundValue(transaction)-transaction.amountInvested)*100)/100;
     }
 
-    getTransactionReturnPercentage(transaction: MFTransaction) : number {
+    getTransactionReturnPercentage(transaction: EquityTransaction) : number {
         return Math.round((this.getTransactionReturn(transaction)/transaction.amountInvested)*100*100)/100;
     }
 
-    getHistoricalNav(transaction: MFTransaction) : number{
+    getHistoricalNav(transaction: EquityTransaction) : number{
       return Number('1233');
     }
 
+    getLatestUnitPrice(t: EquityTransaction): number{
+      return this.getLatestUnitPrice(t);
+    }
 
-    calculateMaturityAmount():number{return 1233;}
-    calculateReurn() : number {return 1234;}
+    getTotalInvestment(t: EquityTransaction): number{
+      return Number('123');
+    }
+
+    getTransactionLatestInvestmentValue(t: EquityTransaction): number {
+      return this.getTransactionLatestInvestmentValue(t);
+    }
+
 }
