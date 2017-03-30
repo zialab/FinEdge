@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule }   from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
@@ -54,13 +55,15 @@ import {InputTextModule,DataTableModule,ButtonModule,DialogModule,CalendarModule
         InvestmentDetailComponent,
         InvestmentsComponent,
         InvestmentSearchComponent,
-        PPFTopViewComponent,
         FDDataTableComponent,
         PPFDataTableComponent,
+        MFDataTableComponent,
         EquityDataTableComponent,
         FDTopViewComponent,
+        PPFTopViewComponent,
         MFTopViewComponent,
-        MFDataTableComponent
+        EquityTopViewComponent
+
     ],
     imports: [
         BrowserModule,
@@ -69,8 +72,8 @@ import {InputTextModule,DataTableModule,ButtonModule,DialogModule,CalendarModule
         InMemoryWebApiModule.forRoot(InMemoryInvestmentsDataService, {passThruUnknownUrl: true}),
         AppRoutingModule,
         InputTextModule,DataTableModule,ButtonModule,DialogModule,CalendarModule,
-        NgxChartsModule
-        //DataTableModule,CommonModule
+        NgxChartsModule,
+        BrowserAnimationsModule
     ],
     providers: [
         InvestmentService,

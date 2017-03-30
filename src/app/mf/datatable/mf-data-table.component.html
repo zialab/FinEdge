@@ -4,86 +4,86 @@
         <p-header>{{investmentName}} Transactions Details</p-header>
         <p-column expander="true" styleClass="col-icon"></p-column>
         <p-column field="transactionDate" header="Start Date" [sortable]="true" [style]="{'overflow':'visible' }">
-            <template let-col let-transactionGroup="rowData" pTemplate="body">
+            <ng-template let-col let-transactionGroup="rowData" pTemplate="body">
                  {{transaction[col.field]|date }}
-            </template>
-            <template let-col let-transactionGroup="rowData" pTemplate="editor">
+            </ng-template>
+            <ng-template let-col let-transactionGroup="rowData" pTemplate="editor">
                 <p-calendar [(ngModel)]="transaction[col.field]"></p-calendar>
-            </template>
+            </ng-template>
         </p-column>
         <!-- <p-column field="scode" header="Scheme#" [sortable]="true"></p-column> -->
         <p-column field="fundName" header="Fund Name" [sortable]="true"></p-column>
         <p-column field="totalInvestment" header="Investment Value" [sortable]="true"></p-column>
         <p-column field="totalReturn" header="Total Return" [sortable]="true"></p-column>
         <p-column field="returnPercentage" header="Return %" [sortable]="true">
-            <template let-col let-transaction="rowData" pTemplate="body">
+            <ng-template let-col let-transaction="rowData" pTemplate="body">
                  {{getReturnPercentage(transaction)}}
-            </template>
+            </ng-template>
         </p-column>
         <p-column field="latestFundValue" header="Fund Value" [sortable]="true"></p-column>
-        <template let-transactionGroup pTemplate="rowexpansion">
+        <ng-template let-transactionGroup pTemplate="rowexpansion">
           <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
             <div class="ui-grid-row">
               <p-dataTable [value]="transactionGroup.transactions" selectionMode="single" [(selection)]="selectedTransaction" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10" [responsive]="true">
               <p-column field="transactionDate" header="Trans. Date" [sortable]="true" [style]="{'overflow':'visible' }">
-                  <template let-col let-transaction="rowData" pTemplate="body">
+                  <ng-template let-col let-transaction="rowData" pTemplate="body">
                        {{transaction[col.field]|date }}
-                  </template>
-                  <template let-col let-transaction="rowData" pTemplate="editor">
+                  </ng-template>
+                  <ng-template let-col let-transaction="rowData" pTemplate="editor">
                       <p-calendar [(ngModel)]="transaction[col.field]"></p-calendar>
-                  </template>
+                  </ng-template>
               </p-column>
               <p-column field="folioNumber" header="Folio#" [sortable]="true"></p-column>
               <p-column field="amountInvested" header="Investment Value" [sortable]="true"></p-column>
               <p-column field="unitPrice" header="Unit Price" [sortable]="true"></p-column>
               <p-column field="totalUnits" header="Total Price" [sortable]="true">
-                  <template let-col let-transaction="rowData" pTemplate="body">
+                  <ng-template let-col let-transaction="rowData" pTemplate="body">
                        {{getTransactionUnits(transaction)}}
-                  </template>
+                  </ng-template>
               </p-column>
               <p-column field="Return" header="Return" [sortable]="true">
-                  <template let-col let-transaction="rowData" pTemplate="body">
+                  <ng-template let-col let-transaction="rowData" pTemplate="body">
                        {{getTransactionReturn(transaction)}}
-                  </template>
+                  </ng-template>
               </p-column>
               <p-column field="Return" header="Return" [sortable]="true">
-                  <template let-col let-transaction="rowData" pTemplate="body">
+                  <ng-template let-col let-transaction="rowData" pTemplate="body">
                        {{getTransactionReturnPercentage(transaction)}}
-                  </template>
+                  </ng-template>
               </p-column>
               <p-column field="amountAtMaturity" header="Maturity Value" [sortable]="true">
-                  <template let-col let-transaction="rowData" pTemplate="body">
+                  <ng-template let-col let-transaction="rowData" pTemplate="body">
                        {{getTransactionLatestFundValue(transaction)}}
-                  </template>
+                  </ng-template>
               </p-column>
               </p-dataTable>
             </div>
         </div>
 
 
-        </template>
+        </ng-template>
 
 
 <!--
         <p-column field="rateOfReturn" header="Rate" [sortable]="true"></p-column>
         <p-column field="maturityDate" header="Maturity Date" [sortable]="true" [style]="{'overflow':'visible' }">
-            <template let-col let-transaction="rowData" pTemplate="body">
+            <ng-template let-col let-transaction="rowData" pTemplate="body">
                  {{transaction[col.field]|date }}
-            </template>
-            <template let-col let-transaction="rowData" pTemplate="editor">
+            </ng-template>
+            <ng-template let-col let-transaction="rowData" pTemplate="editor">
                 <p-calendar [(ngModel)]="transaction[col.field]"></p-calendar>
-            </template>
+            </ng-template>
         </p-column>
 
         <p-column field="returns" header="Profit" [sortable]="true">
-            <template let-col let-transaction="rowData" pTemplate="body">
+            <ng-template let-col let-transaction="rowData" pTemplate="body">
                  {{getReturn(transaction)}}
-            </template>
+            </ng-template>
         </p-column>
         <p-column field="amountAtMaturity" header="Maturity Value" [sortable]="true">
-            <template let-col let-transaction="rowData" pTemplate="body">
+            <ng-template let-col let-transaction="rowData" pTemplate="body">
                  {{getAmountAtMaturity(transaction)}}
-            </template>
+            </ng-template>
         </p-column> -->
 
 

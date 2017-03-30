@@ -8,7 +8,7 @@ import { Transaction } from '../../model/transaction';
 import { EquityTransaction } from '../model/equity-transaction';
 import { EquityTransactionGroup } from '../model/equity-transaction-group';
 import { EquityInvestmentService } from '../equity-investment.service';
-import { StckPrice } from '../model/stock-price.model';
+import { StockPrice } from '../model/stock-price.model';
 
 @Component({
     selector: 'equity-data-table',
@@ -59,7 +59,7 @@ export class EquityDataTableComponent implements OnInit {
           for(let transaction of transactions) {
             let equityTransaction:EquityTransaction = transaction as EquityTransaction;
 
-            this.equityInvestmentService.getLatestNav(equityTransaction.scode).subscribe(
+            this.equityInvestmentService.getLatestPrice(equityTransaction.stockShortName).subscribe(
               stckPrice => {
                 this.equityCalculator.addStockPrice(stckPrice);
                 this.prepareMFTransactionGroup(equityTransaction);
@@ -79,12 +79,12 @@ export class EquityDataTableComponent implements OnInit {
         transactionArray.push(equityTransaction);
         let equityTransactionGroup: EquityTransactionGroup = new EquityTransactionGroup(equityTransaction.transactionDate, equityTransaction.scode,
           equityTransaction.stockName, equityTransaction.stockShortName, equityTransaction.unitPrice, equityTransaction.units,
-          this.getTotalInvestment(equityTransaction), this.getLatestUnitPrice(equityTransaction) ,this.getTransactionReturn(equityTransaction),
+          this.getStockInvestment(equityTransaction), this.getLatestUnitPrice(equityTransaction) ,this.getTransactionReturn(equityTransaction),
           this.getTransactionReturnPercentage(equityTransaction), this.getTransactionLatestInvestmentValue(equityTransaction), transactionArray);
           this.transactionGroupMap.set(equityTransaction.scode, equityTransactionGroup);
       } else {
         let equityTransactionGroup: EquityTransactionGroup = this.transactionGroupMap.get(equityTransaction.scode);
-        equityTransactionGroup.totalInvestment = equityTransactionGroup.totalInvestment + this.getTotalInvestment(equityTransaction);
+        equityTransactionGroup.totalInvestment = equityTransactionGroup.totalInvestment + this.getStockInvestment(equityTransaction);
         equityTransactionGroup.totalReturn = equityTransactionGroup.totalReturn + this.getTransactionReturn(equityTransaction);
         equityTransactionGroup.latestInvestmentValue = equityTransactionGroup.latestInvestmentValue + this.getTransactionLatestInvestmentValue(equityTransaction)
         equityTransactionGroup.transactions.push(equityTransaction);
@@ -142,8 +142,8 @@ export class EquityDataTableComponent implements OnInit {
       return this.equityCalculator.getLatestUnitPrice(t);
     }
 
-    private getTotalInvestment(t: EquityTransaction): number{
-      return this.equityCalculator.getTotalInvestment(t);
+    private getStockInvestment(t: EquityTransaction): number{
+      return this.equityCalculator.getStockInvestment(t);
     }
 
     private getTransactionLatestInvestmentValue(t: EquityTransaction): number {

@@ -2,32 +2,32 @@
     <p-dataTable [value]="transactions" selectionMode="single" [(selection)]="selectedTransaction" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10" [responsive]="true">
         <p-header>{{investmentName}} Investment Transactions Details</p-header>
         <p-column field="transactionDate" header="Transaction Date" [sortable]="true" [style]="{'overflow':'visible' }">
-            <template let-col let-transaction="rowData" pTemplate="body">
+            <ng-template let-col let-transaction="rowData" pTemplate="body">
                  {{transaction[col.field]|date }}
-            </template>
-            <template let-col let-transaction="rowData" pTemplate="editor">
+            </ng-template>
+            <ng-template let-col let-transaction="rowData" pTemplate="editor">
                 <p-calendar [(ngModel)]="transaction[col.field]"></p-calendar>
-            </template>
+            </ng-template>
         </p-column>
         <p-column field="amountInvested" header="Investment Value" [sortable]="true"></p-column>
         <p-column field="rateOfReturn" header="Rate" [sortable]="true"></p-column>
         <p-column field="maturityDate" header="Maturity Date" [sortable]="true" [style]="{'overflow':'visible' }">
-            <template let-col let-transaction="rowData" pTemplate="body">
+            <ng-template let-col let-transaction="rowData" pTemplate="body">
                  {{transaction[col.field]|date }}
-            </template>
-            <template let-col let-transaction="rowData" pTemplate="editor">
+            </ng-template>
+            <ng-template let-col let-transaction="rowData" pTemplate="editor">
                 <p-calendar [(ngModel)]="transaction[col.field]"></p-calendar>
-            </template>
+            </ng-template>
         </p-column>
         <p-column field="returns" header="Profit" [sortable]="true">
-            <template let-col let-transaction="rowData" pTemplate="body">
+            <ng-template let-col let-transaction="rowData" pTemplate="body">
                  {{getReturn(transaction)}}
-            </template>
+            </ng-template>
         </p-column>
         <p-column field="amountAtMaturity" header="Maturity Value" [sortable]="true">
-            <template let-col let-transaction="rowData" pTemplate="body">
+            <ng-template let-col let-transaction="rowData" pTemplate="body">
                  {{getAmountAtMaturity(transaction)}}
-            </template>
+            </ng-template>
         </p-column>
         <p-column field="charges" header="Charges" [sortable]="true"></p-column>
         <p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-footer>
@@ -39,9 +39,9 @@
                 <div class="ui-grid-col-4"><label for="transactionDate">Transaction Date</label></div>
                 <p-calendar [(ngModel)]="transaction.transactionDate" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{transaction.transactionDate|date}}</span>
                 <!--
-                
+
                 <div class="ui-grid-col-8"><input pInputText id="transactionDate" [(ngModel)]="transaction.transactionDate" /></div>
-                
+
                 -->
             </div>
             <div class="ui-grid-row">
@@ -56,7 +56,7 @@
                 <div class="ui-grid-col-4"><label for="maturityDate">Maturity Date</label></div>
 <!--                <div class="ui-grid-col-8"><input pInputText id="maturityDate" [(ngModel)]="transaction.maturityDate"/></div>-->
                 <p-calendar [(ngModel)]="transaction.maturityDate" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{transaction.maturityDate|date}}</span>
-                
+
             </div>
             <div class="ui-grid-row">
                 <div class="ui-grid-col-4"><label for="returns">Profit</label></div>

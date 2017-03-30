@@ -1,19 +1,16 @@
 import { Injectable }    from '@angular/core';
 
-import { RateFrequency } from '../model/rate-frequency';
-import { CalculationFrequency } from '../model/calculation-frequency';
-import { TransactionI } from '../model/transaction-interface';
 import { Transaction } from '../model/transaction';
 import { EquityTransaction } from './model/equity-transaction';
 import { EquityInvestmentService } from './equity-investment.service';
-import { StckPrice } from './model/stock-price.model';
+import { StockPrice } from './model/stock-price.model';
 //import { MFData } from '../model/mf-data.model';
 
 @Injectable()
 export class EquityCalculator {
 
     private investmentAmount : number = 0;
-    private stockPrices : Array<StckPrice> = [];
+    private stockPrices : Array<StockPrice> = [];
 
     constructor(private mfInvestmentService: EquityInvestmentService) { }
 
@@ -29,18 +26,17 @@ export class EquityCalculator {
     //   }
     // }
 
-    addStockPrice(stckPrice: StckPrice): void {
-      this.stockPrices.push(stckPrice);
+    addStockPrice(stockPrice: StockPrice): void {
+
+      this.stockPrices.push(stockPrice);
     }
 
-    private isMFNavIncludes(scode: number): boolean {
+    isStockPricePresent(shortName: string): boolean {
       let result :boolean = false;
       this.stockPrices.forEach(stockItem => {
-        // stockItem.data.forEach(dataItem => {
-        //     if(dataItem.schmCode == scode) {
-        //       result = true;
-        //     }
-        // });
+            if(stockItem.dataset.dataset_code === shortName) {
+              result = true;
+            }
       });
       return result;
     }
@@ -50,22 +46,18 @@ export class EquityCalculator {
     }
 
     getTransactionLatestFundValue(transaction: EquityTransaction) : number {
-        let latestValue : number = this.getTransactionUnits(transaction) * this.getLatestNav(transaction);
+        let latestValue : number = this.getTransactionUnits(transaction) * this.getLatestUnitPrice(transaction);
         return Math.round(latestValue*100)/100;;
     }
 
-    getLatestNav(transaction: EquityTransaction) : number{
+    getLatestUnitPrice(transaction: EquityTransaction) : number{
       let resultNavVal : number;
       this.stockPrices.forEach(stockItem => {
-        // stockItem.data.forEach(dataItem => {
-        //     if(dataItem.schmCode == transaction.scode) {
-        //       resultNavVal = dataItem.navVal;
-        //     }
-        // });
+          if(stockItem.dataset.dataset_code === transaction.stockShortName) {
+            resultNavVal = Number(stockItem.dataset.data[0][5]);
+          }
       });
-
-      // return resultNavVal;
-      return 101;
+      return resultNavVal;
     }
 
     getTransactionReturn(transaction: EquityTransaction) : number {
@@ -80,16 +72,16 @@ export class EquityCalculator {
       return Number('1233');
     }
 
-    getLatestUnitPrice(t: EquityTransaction): number{
-      return this.getLatestUnitPrice(t);
-    }
+    // getLatestUnitPrice(t: EquityTransaction): number{
+    //   return Number('100');//this.getLatestUnitPrice(t);
+    // }
 
-    getTotalInvestment(t: EquityTransaction): number{
+    getStockInvestment(t: EquityTransaction): number{
       return Number('123');
     }
 
     getTransactionLatestInvestmentValue(t: EquityTransaction): number {
-      return this.getTransactionLatestInvestmentValue(t);
+      return Number('110');//this.getTransactionLatestInvestmentValue(t);
     }
 
 }

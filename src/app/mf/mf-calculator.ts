@@ -74,11 +74,7 @@ export class MFCalculator {
         return Math.round((this.getTransactionReturn(transaction)/transaction.amountInvested)*100*100)/100;
     }
 
-    getHistoricalNav(transaction: MFTransaction) : number{
-      return Number('1233');
-    }
-
-
-    calculateMaturityAmount():number{return 1233;}
-    calculateReurn() : number {return 1234;}
+    // getHistoricalNav(transaction: MFTransaction) : number{
+    //   return Number('1233');
+    // }
 }

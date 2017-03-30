@@ -1,16 +1,9 @@
-//import { MFData } from './mf-data.model';
+import { StockDataSet } from './stock-dataset.model';
 
-export class StckPrice {
-    // scode: number;
-    // date: string;
-    // nav: string;
+export class StockPrice {
 
+        public dataset: StockDataSet;
 
-        public reqTime:number;
-        public resTime:number;
-        public developedBy:string;
-        public status:string;
-        public errormsg:string;
-        //public data:Array<MFData>;
+        constructor(dataset: StockDataSet) {}
 
 }
