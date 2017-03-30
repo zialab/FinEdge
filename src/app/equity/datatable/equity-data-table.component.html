@@ -18,14 +18,23 @@
                {{getLatestUnitPrice(transaction)}}
           </ng-template>
         </p-column>
+        <p-column field="totalQuantity" header="Quantity" [sortable]="true">
+          <ng-template let-col let-transaction="rowData" pTemplate="body">
+               {{getTotalQuantity(transaction)}}
+          </ng-template>
+        </p-column>
         <p-column field="totalInvestment" header="Investment Value" [sortable]="true"></p-column>
-        <p-column field="totalReturn" header="Total Return" [sortable]="true"></p-column>
-        <p-column field="returnPercentage" header="Return %" [sortable]="true">
+        <p-column field="todaysGain" header="Today's Gain" [sortable]="true">
+          <ng-template let-col let-transaction="rowData" pTemplate="body">
+               {{getTransactionGroupTodaysGainString(transaction)}}
+          </ng-template>
+        </p-column>
+        <p-column field="overallGain" header="Overall's Gain" [sortable]="true">
             <ng-template let-col let-transaction="rowData" pTemplate="body">
-                 {{getReturnPercentage(transaction)}}
+                 {{getTransactionGroupOverallGainString(transaction)}}
             </ng-template>
         </p-column>
-        <p-column field="latestFundValue" header="Fund Value" [sortable]="true"></p-column>
+        <p-column field="latestInvestmentValue" header="Latest Value" [sortable]="true"></p-column>
         <ng-template let-transactionGroup pTemplate="rowexpansion">
           <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
             <div class="ui-grid-row">
@@ -43,20 +52,20 @@
               <p-column field="units" header="Units" [sortable]="true"></p-column>
               <p-column field="amountInvested" header="Investment Value" [sortable]="true">
                 <ng-template let-col let-transaction="rowData" pTemplate="body">
-                     {{getStockInvestment(transaction)}}
+                     {{getTransactionInvestmentValue(transaction)}}
                 </ng-template>
               </p-column>
-              <p-column field="Return" header="Day Return" [sortable]="true">
+              <p-column field="todaysGain" header="Today's Gain" [sortable]="true">
                   <ng-template let-col let-transaction="rowData" pTemplate="body">
-                       {{getTransactionReturn(transaction)}}
+                       {{getTransactionTodayGainString(transaction)}}
                   </ng-template>
               </p-column>
-              <p-column field="Return" header="Total Return" [sortable]="true">
+              <p-column field="overallGain" header="Overall's Gain" [sortable]="true">
                   <ng-template let-col let-transaction="rowData" pTemplate="body">
-                       {{getTransactionReturnPercentage(transaction)}}
+                       {{getTransactionOverallGainString(transaction)}}
                   </ng-template>
               </p-column>
-              <p-column field="amountAtMaturity" header="Latest Value" [sortable]="true">
+              <p-column field="latestValue" header="Latest Value" [sortable]="true">
                   <ng-template let-col let-transaction="rowData" pTemplate="body">
                        {{getTransactionLatestInvestmentValue(transaction)}}
                   </ng-template>

@@ -31,7 +31,7 @@ export class EquityDataTableComponent implements OnInit {
 
     private transactions: Transaction[]=[];
     transactionGroupList: EquityTransactionGroup[];
-    private transactionGroupMap: Map<number, EquityTransactionGroup> = new Map<number, EquityTransactionGroup>();
+    private transactionGroupMap: Map<string, EquityTransactionGroup> = new Map<string, EquityTransactionGroup>();
     //equityCalculator: MFCalculator = new MFCalculator();//this.transactionGroupMap = new Map<number, MFTransactionGroup>();
     private errorMessage: string;
 
@@ -74,26 +74,28 @@ export class EquityDataTableComponent implements OnInit {
     // }
 
     private prepareMFTransactionGroup(equityTransaction:EquityTransaction): void {
-      if(this.transactionGroupMap.get(equityTransaction.scode) === undefined) {
+      if(this.transactionGroupMap.get(equityTransaction.stockShortName) === undefined) {
         let transactionArray : EquityTransaction[] = [];
         transactionArray.push(equityTransaction);
         let equityTransactionGroup: EquityTransactionGroup = new EquityTransactionGroup(equityTransaction.transactionDate, equityTransaction.scode,
           equityTransaction.stockName, equityTransaction.stockShortName, equityTransaction.unitPrice, equityTransaction.units,
-          this.getStockInvestment(equityTransaction), this.getLatestUnitPrice(equityTransaction) ,this.getTransactionReturn(equityTransaction),
-          this.getTransactionReturnPercentage(equityTransaction), this.getTransactionLatestInvestmentValue(equityTransaction), transactionArray);
-          this.transactionGroupMap.set(equityTransaction.scode, equityTransactionGroup);
+          this.getTransactionInvestmentValue(equityTransaction), this.getLatestUnitPrice(equityTransaction) ,this.getTransactionTodayGainString(equityTransaction),
+          this.getTransactionOverallGainString(equityTransaction), this.getTransactionLatestInvestmentValue(equityTransaction), transactionArray);
+          this.transactionGroupMap.set(equityTransaction.stockShortName, equityTransactionGroup);
       } else {
-        let equityTransactionGroup: EquityTransactionGroup = this.transactionGroupMap.get(equityTransaction.scode);
-        equityTransactionGroup.totalInvestment = equityTransactionGroup.totalInvestment + this.getStockInvestment(equityTransaction);
-        equityTransactionGroup.totalReturn = equityTransactionGroup.totalReturn + this.getTransactionReturn(equityTransaction);
-        equityTransactionGroup.latestInvestmentValue = equityTransactionGroup.latestInvestmentValue + this.getTransactionLatestInvestmentValue(equityTransaction)
+        let equityTransactionGroup: EquityTransactionGroup = this.transactionGroupMap.get(equityTransaction.stockShortName);
+        equityTransactionGroup.totalInvestment = equityTransactionGroup.totalInvestment + this.getTransactionInvestmentValue(equityTransaction);
+        //equityTransactionGroup.totalReturn = equityTransactionGroup.totalReturn + this.getTransactionReturn(equityTransaction);
+        equityTransactionGroup.latestInvestmentValue = equityTransactionGroup.latestInvestmentValue + this.getTransactionLatestInvestmentValue(equityTransaction);
+        equityTransactionGroup.units = equityTransactionGroup.units + equityTransaction.units;
         equityTransactionGroup.transactions.push(equityTransaction);
-        this.transactionGroupMap.set(equityTransaction.scode, equityTransactionGroup);
+        this.transactionGroupMap.set(equityTransaction.stockShortName, equityTransactionGroup);
       }
 
       this.transactionGroupList = [];
-      this.transactionGroupMap.forEach((equityTransactionGroup: EquityTransactionGroup, key: number) => {
-        equityTransactionGroup.returnPercentage = this.getReturnPercentage(equityTransactionGroup);
+      this.transactionGroupMap.forEach((equityTransactionGroup: EquityTransactionGroup, key: string) => {
+        equityTransactionGroup.todaysGainString = this.getTransactionGroupTodaysGainString(equityTransactionGroup);
+        equityTransactionGroup.overallGainString = this.getTransactionGroupOverallGainString(equityTransactionGroup);
         this.transactionGroupList.push(equityTransactionGroup);
       });
     }
@@ -142,25 +144,17 @@ export class EquityDataTableComponent implements OnInit {
       return this.equityCalculator.getLatestUnitPrice(t);
     }
 
-    private getStockInvestment(t: EquityTransaction): number{
-      return this.equityCalculator.getStockInvestment(t);
-    }
+    // private getTransactionReturn(t: EquityTransaction): number {
+    //   return this.equityCalculator.getTransactionReturn(t);
+    // }
 
-    private getTransactionLatestInvestmentValue(t: EquityTransaction): number {
-      return this.equityCalculator.getTransactionLatestInvestmentValue(t);
-    }
+    // private getTransactionReturnPercentage(t: EquityTransaction): number {
+    //   return this.equityCalculator.getTransactionReturnPercentage(t);
+    // }
 
-    private getTransactionReturn(t: EquityTransaction): number {
-      return this.equityCalculator.getTransactionReturn(t);
-    }
-
-    private getTransactionReturnPercentage(t: EquityTransaction): number {
-      return this.equityCalculator.getTransactionReturnPercentage(t);
-    }
-
-    private getReturnPercentage(equityTransactionGroup: EquityTransactionGroup): number {
-      return Math.round(((equityTransactionGroup.totalReturn/equityTransactionGroup.totalInvestment)*100)*100)/100;
-    }
+    // private getReturnPercentage(equityTransactionGroup: EquityTransactionGroup): number {
+    //   return Math.round(((equityTransactionGroup.totalReturn/equityTransactionGroup.totalInvestment)*100)*100)/100;
+    // }
 
     private getTransactionGroupInvestment(transactions : EquityTransaction[]): number {
       let totalInvestment: number = 0;
@@ -170,4 +164,44 @@ export class EquityDataTableComponent implements OnInit {
       return totalInvestment;
     }
 
+    /////
+
+    private getTotalQuantity(t: EquityTransaction): number {
+      // let transactionList: EquityTransaction[] = this.getTransactionList(t.stockShortName);
+      // let totalQuantity: number = 0;
+      // for (let item of transactionList) {
+      //   let transaction: EquityTransaction = item as EquityTransaction;
+      //   totalQuantity = totalQuantity + transaction.units;
+      // }
+      // return totalQuantity;
+      return this.transactionGroupMap.get(t.stockShortName).units;
+    }
+
+    private getTransactionList(shortName: string): Array<EquityTransaction> {
+      return this.transactionGroupMap.get(shortName).transactions;
+    }
+
+    private getTransactionInvestmentValue(t: EquityTransaction): number{
+      return this.equityCalculator.getTransactionInvestmentValue(t);
+    }
+
+    private getTransactionTodayGainString(t: EquityTransaction): string{
+      return this.equityCalculator.getTransactionTodayGain(t)+ ' ('+this.equityCalculator.getTransactionTodayPercentageGain(t)+'%)';
+    }
+
+    private getTransactionOverallGainString(t: EquityTransaction): string{
+      return this.equityCalculator.getTransactionOverallGain(t) + ' ('+this.equityCalculator.getTransactionOverallPercentageGain(t)+'%)';
+    }
+
+    private getTransactionLatestInvestmentValue(t: EquityTransaction): number {
+      return this.equityCalculator.getTransactionLatestInvestmentValue(t);
+    }
+
+    private getTransactionGroupTodaysGainString(tg: EquityTransactionGroup): string{
+      return this.equityCalculator.getTransactionGroupTodayGain(tg)+ ' ('+this.equityCalculator.getTransactionGroupTodayPercentageGain(tg)+'%)';
+    }
+
+    private getTransactionGroupOverallGainString(tg: EquityTransactionGroup): string{
+      return this.equityCalculator.getTransactionGroupOverallGain(tg) + ' ('+this.equityCalculator.getTransactionGroupOverallPercentageGain(tg)+'%)';
+    }
 }
