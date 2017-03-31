@@ -28,7 +28,6 @@ export class EquityCalculator {
     // }
 
     addStockPrice(stockPrice: StockPrice): void {
-
       this.stockPrices.push(stockPrice);
     }
 
@@ -41,23 +40,24 @@ export class EquityCalculator {
       });
       return result;
     }
-    getTransactionUnits(transaction: EquityTransaction): number{
-        let totalUnits : number = transaction.amountInvested/transaction.unitPrice;
-        return Math.round(totalUnits*100)/100;
-    }
 
-    getTransactionLatestFundValue(transaction: EquityTransaction) : number {
-        let latestValue : number = this.getTransactionUnits(transaction) * this.getLatestUnitPrice(transaction);
-        return Math.round(latestValue*100)/100;;
-    }
+    // getTransactionUnits(transaction: EquityTransaction): number{
+    //     let totalUnits : number = transaction.amountInvested/transaction.unitPrice;
+    //     return Math.round(totalUnits*100)/100;
+    // }
 
-    getTransactionReturn(transaction: EquityTransaction) : number {
-        return Math.round((this.getTransactionLatestFundValue(transaction)-transaction.amountInvested)*100)/100;
-    }
+    // getTransactionLatestFundValue(transaction: EquityTransaction) : number {
+    //     let latestValue : number = this.getTransactionUnits(transaction) * this.getLatestUnitPrice(transaction);
+    //     return Math.round(latestValue*100)/100;;
+    // }
 
-    getTransactionReturnPercentage(transaction: EquityTransaction) : number {
-        return Math.round((this.getTransactionReturn(transaction)/transaction.amountInvested)*100*100)/100;
-    }
+    // getTransactionReturn(transaction: EquityTransaction) : number {
+    //     return Math.round((this.getTransactionLatestFundValue(transaction)-transaction.amountInvested)*100)/100;
+    // }
+
+    // getTransactionReturnPercentage(transaction: EquityTransaction) : number {
+    //     return Math.round((this.getTransactionReturn(transaction)/transaction.amountInvested)*100*100)/100;
+    // }
 
     getHistoricalNav(transaction: EquityTransaction) : number{
       return Number('1233');
@@ -67,12 +67,12 @@ export class EquityCalculator {
     //   return Number('100');//this.getLatestUnitPrice(t);
     // }
 
-    getStockInvestment(t: EquityTransaction): number{
-      return Number('123');
-    }
+    // getStockInvestment(t: EquityTransaction): number{
+    //   return Number('123');
+    // }
 
 
-    //////
+    //Data Table Calculation
     getLatestUnitPrice(transaction: EquityTransaction) : number{
       let resultNavVal : number;
       this.stockPrices.forEach(stockItem => {
@@ -98,11 +98,11 @@ export class EquityCalculator {
     }
 
     getTransactionTodayGain(t: EquityTransaction): number{
-      return Math.round((t.units*this.getLatestUnitPrice(t)-t.units*this.getYesterdayUnitPrice(t))*100)/100;
+      return Math.round((this.getTransactionInvestmentValue(t)-this.getTransactionYesterdayInvestmentValue(t))*100)/100;
     }
 
     getTransactionTodayPercentageGain(t: EquityTransaction): number{
-      return Math.round(((this.getTransactionTodayGain(t))/(t.units*this.getLatestUnitPrice(t))*100)*100)/100;
+      return Math.round(((this.getTransactionTodayGain(t))/(this.getTransactionLatestInvestmentValue(t))*100)*100)/100;
     }
 
     getTransactionOverallGain(t: EquityTransaction): number{
@@ -113,23 +113,72 @@ export class EquityCalculator {
       return Math.round((((this.getTransactionOverallGain(t))/this.getTransactionInvestmentValue(t))*100)*100)/100;
     }
 
+    getTransactionGroupTodayGain(transactionGroup: EquityTransactionGroup): number {
+      let todaysGain: number = 0;
+      for(let t of transactionGroup.transactions) {
+        let transaction: EquityTransaction = t as EquityTransaction;
+        todaysGain = todaysGain + this.getTransactionTodayGain(transaction);
+      }
+      return Math.round(todaysGain*100)/100;
+    }
+
+    getTransactionGroupTodayPercentageGain(transactionGroup: EquityTransactionGroup): number {
+      let todaysPerGain: number = 0;
+      todaysPerGain = this.getTransactionGroupTodayGain(transactionGroup)/this.getTransactionGroupYesterdayInvestmentValue(transactionGroup);
+      return Math.round(todaysPerGain*100*100)/100;;
+    }
+
+    getTransactionGroupOverallGain(transactionGroup: EquityTransactionGroup): number {
+      let overallGain: number = 0;
+      for(let t of transactionGroup.transactions) {
+        let transaction: EquityTransaction = t as EquityTransaction;
+        overallGain = overallGain + this.getTransactionOverallGain(transaction);
+      }
+      return Math.round(overallGain*100)/100;
+    }
+
+    getTransactionGroupOverallPercentageGain(transactionGroup: EquityTransactionGroup): number {
+      let overallPerGain: number = 0;
+      overallPerGain = this.getTransactionGroupOverallGain(transactionGroup)/this.getTransactionGroupInvestmentValue(transactionGroup);
+      return Math.round(overallPerGain*100*100)/100;
+    }
+
     getTransactionLatestInvestmentValue(t: EquityTransaction): number {
       return Math.round((t.units*this.getLatestUnitPrice(t))*100)/100;
     }
 
-    getTransactionGroupTodayGain(transactionGroup: EquityTransactionGroup): number {
-      return 0;
+    private getTransactionYesterdayInvestmentValue(t: EquityTransaction): number{
+      return Math.round((t.units*this.getYesterdayUnitPrice(t))*100)/100;
     }
 
-    getTransactionGroupTodayPercentageGain(transactionGroup: EquityTransactionGroup): number {
-      return 0;
+    private getTransactionGroupInvestmentValue(transactionGroup: EquityTransactionGroup): number {
+      let totalInvestmentValue: number = 0;
+      for(let t of transactionGroup.transactions) {
+        let transaction: EquityTransaction = t as EquityTransaction;
+        totalInvestmentValue = totalInvestmentValue + this.getTransactionInvestmentValue(transaction);
+      }
+      return Math.round(totalInvestmentValue*100)/100;
     }
 
-    getTransactionGroupOverallGain(transactionGroup: EquityTransactionGroup): number {
-      return 0;
+    private getTransactionGroupLatestInvestmentValue(transactionGroup: EquityTransactionGroup): number {
+      let totalLatestValue: number = 0;
+      for(let t of transactionGroup.transactions) {
+        let transaction: EquityTransaction = t as EquityTransaction;
+        totalLatestValue = totalLatestValue + this.getTransactionLatestInvestmentValue(transaction);
+      }
+      return Math.round(totalLatestValue*100)/100;
     }
 
-    getTransactionGroupOverallPercentageGain(transactionGroup: EquityTransactionGroup): number {
-      return 0;
+    private getTransactionGroupYesterdayInvestmentValue(transactionGroup: EquityTransactionGroup): number {
+      let totalYesterdayValue: number = 0;
+      for(let t of transactionGroup.transactions) {
+        let transaction: EquityTransaction = t as EquityTransaction;
+        totalYesterdayValue = totalYesterdayValue + this.getTransactionYesterdayInvestmentValue(transaction);
+      }
+      return Math.round(totalYesterdayValue*100)/100;
     }
+
+
+    //Top View Calculation
+
 }

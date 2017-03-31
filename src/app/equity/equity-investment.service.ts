@@ -25,7 +25,7 @@ export class EquityInvestmentService {
   constructor(private http: Http) { }
 
   getLatestPrice(shortName: string): Observable<StockPrice> {
-    let url : string = this.equityUrl+'api/v3/datasets/NSE/'+shortName+'.json?rows=2';
+    let url : string = this.equityUrl+'api/v3/datasets/NSE/'+shortName+'.json?rows=2?api_key=AdH7n-CDua_KxCGScV2d';
     return  this.http.get(url, this.options)
             .map(res =>  res.json() as StockPrice)
             .catch(this.handleError); // ...using post request
