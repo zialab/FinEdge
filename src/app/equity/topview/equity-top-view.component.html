@@ -3,12 +3,12 @@
     <div class="grid grid-pad">
         <div class="col-1-4">
             <div class="module investment">
-                <h4>{{getTotalInvestment()}}</h4>
+                <h4>{{ getTotalInvestment() | currency : 'INR':true}}</h4>
             </div>
         </div>
         <div class="col-1-4">
             <div class="module investment">
-                <h4>{{getTotalReturn()}}</h4>
+                <h4>{{getTotalReturn() | currency : 'INR':true}}</h4>
             </div>
         </div>
         <div class="col-1-4">
@@ -18,7 +18,7 @@
         </div>
         <div class="col-1-4">
             <div class="module investment">
-                <h4>{{getTotalLatestInvestmentValue()}}</h4>
+                <h4>{{getTotalLatestInvestmentValue() | currency : 'INR':true}}</h4>
             </div>
         </div>
     </div>

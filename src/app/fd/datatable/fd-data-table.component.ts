@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 
 import { InvestmentService } from './../../investment/investment.service';
@@ -15,7 +15,8 @@ import { CalculationFrequency } from '../../model/calculation-frequency';
     styleUrls: [  "./../../../../node_modules/primeng/resources/primeng.min.css",
                   "./../../../../node_modules/primeng/resources/themes/omega/theme.css",
                   "./../../../../node_modules/font-awesome/css/font-awesome.min.css"
-                ]
+                ],
+    encapsulation: ViewEncapsulation.None
 
 })
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 
 import { InvestmentService } from '../../investment/investment.service';
@@ -12,7 +12,8 @@ import { CalculationFrequency } from '../../model/calculation-frequency';
 @Component({
     selector: 'ppf-data-table',
     templateUrl: './ppf-data-table.component.html',
-    styleUrls: [ '../../dashboard/dashboard.component.css' ]
+    styleUrls: [ '../../dashboard/dashboard.component.css' ],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class PPFDataTableComponent implements OnInit {

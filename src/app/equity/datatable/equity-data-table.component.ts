@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 
 import { InvestmentService } from '../../investment/investment.service';
@@ -13,7 +13,8 @@ import { StockPrice } from '../model/stock-price.model';
 @Component({
     selector: 'equity-data-table',
     templateUrl: './equity-data-table.component.html',
-    styleUrls: [ '../../dashboard/dashboard.component.css' ]
+    styleUrls: [ '../../dashboard/dashboard.component.css' ],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class EquityDataTableComponent implements OnInit {

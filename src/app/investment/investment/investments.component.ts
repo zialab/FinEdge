@@ -34,24 +34,24 @@ export class InvestmentsComponent implements OnInit {
         this.investmentService.getInvestments().then(investments => this.investments = investments);
     }
 
-    // add(name: string): void {
-    //     name = name.trim();
-    //     if (!name) { return; }
-    //         this.investmentService.create(name)
-    //         .then(investment => {
-    //         this.investments.push(investment);
-    //         this.selectedInvestment = null;
-    //   });
-    // }
-    //
-    // delete(investment: Investment): void {
-    //     this.investmentService
-    //     .delete(investment.id)
-    //     .then(() => {
-    //       this.investments = this.investments.filter(i => i !== investment);
-    //       if (this.selectedInvestment === investment) { this.selectedInvestment = null; }
-    //     });
-    // }
+    add(name: string): void {
+        name = name.trim();
+        if (!name) { return; }
+            this.investmentService.create(name)
+            .then(investment => {
+            this.investments.push(investment);
+            this.selectedInvestment = null;
+      });
+    }
+    
+    delete(investment: Investment): void {
+        this.investmentService
+        .delete(investment.id)
+        .then(() => {
+          this.investments = this.investments.filter(i => i !== investment);
+          if (this.selectedInvestment === investment) { this.selectedInvestment = null; }
+        });
+    }
 
     onSelect(investment: Investment): void {
         this.selectedInvestment = investment;
