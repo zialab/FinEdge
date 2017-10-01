@@ -14,9 +14,9 @@ import { MFInvestmentService } from './../mf-investment.service';
     selector: 'mf-data-table',
     templateUrl: './mf-data-table.component.html',
     styleUrls: [  '../../dashboard/dashboard.component.css',
-      './../../../../node_modules/primeng/resources/primeng.min.css',
-      './../../../../node_modules/primeng/resources/themes/omega/theme.css',
-      './../../../../node_modules/font-awesome/css/font-awesome.min.css'],
+    "./../../../../node_modules/primeng/resources/primeng.min.css",
+    "./../../../../node_modules/primeng/resources/themes/omega/theme.css",
+    "./../../../../node_modules/font-awesome/css/font-awesome.min.css"],
     encapsulation: ViewEncapsulation.None
 })
 
