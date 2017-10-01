@@ -12,9 +12,9 @@ import { CalculationFrequency } from '../../model/calculation-frequency';
 @Component({
     selector:     'fd-data-table',
     templateUrl:  './fd-data-table.component.html',
-    styleUrls: [  "./../../../../node_modules/primeng/resources/primeng.min.css",
-                  "./../../../../node_modules/primeng/resources/themes/omega/theme.css",
-                  "./../../../../node_modules/font-awesome/css/font-awesome.min.css"
+    styleUrls: [  './../../../../node_modules/primeng/resources/primeng.min.css',
+                  './../../../../node_modules/primeng/resources/themes/omega/theme.css',
+                  './../../../../node_modules/font-awesome/css/font-awesome.min.css'
                 ],
     encapsulation: ViewEncapsulation.None
 
